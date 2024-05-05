@@ -7,6 +7,7 @@ function loginClick(){
     const modal = document.querySelector('#modal-view');
     modal.classList.add('flex');
     modal.classList.remove('hidden');
+    modal.style.top= window.scrollY + 'px';
     const body = document.querySelector('body');
     body.classList.add('no-scroll');
 }
