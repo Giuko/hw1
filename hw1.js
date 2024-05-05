@@ -3,6 +3,15 @@ let headContent = Array.from(document.querySelectorAll('#head .item'));
 const sidebarList = document.querySelector('#popular-communities-list');
 const sidebar = document.querySelector('#sidebar');
 
+
+
+const usernameJson = [];
+fetch('username.php').then((response) => {return response.json()}).then((json) =>{
+    for(let i = 0; i < json.length; i++){
+        usernameJson.push(json[i].Username);
+    }
+})
+
 function contieneMaiuscola(word) {
     let alfabeto = "ABCDEFGHILJKMNOPQRSTUVWXYZ";
     for(let i = 0; i < word.length; i++){
@@ -32,24 +41,38 @@ function contieneSimbolo(word) {
     }
     return false;
 }
-
+let j;
 function validazione(e){
     const username = form.username.value;
     const password = form.password.value;
+    const action = e.submitter.value;
+
     if(username.length == 0 || password.length == 0){
         alert("Compilare tutti i campi");
         e.preventDefault();
-    }else if(password.length <= 7){
-        alert("Password troppo corta");
-        e.preventDefault();
-    }else if(!contieneMaiuscola(password)){
-        alert("Password deve contenere almeno una maiuscola");
-        e.preventDefault();
-    }else if(!contieneNumero(password)){
-        alert("Password deve contenere almeno un numero");
-        e.preventDefault();
-    }else if(!contieneSimbolo(password)){
-        alert("Password deve contenere almeno un simbolo");
+    }
+    if(action === "Sign Up"){
+        if(usernameJson.includes(username)){
+            alert("Nome Utente già in uso");
+            e.preventDefault();
+        }else if(password.length <= 7){
+            alert("Password troppo corta");
+            e.preventDefault();
+        }else if(!contieneMaiuscola(password)){
+            alert("Password deve contenere almeno una maiuscola");
+            e.preventDefault();
+        }else if(!contieneNumero(password)){
+            alert("Password deve contenere almeno un numero");
+            e.preventDefault();
+        }else if(!contieneSimbolo(password)){
+            alert("Password deve contenere almeno un simbolo");
+            e.preventDefault();
+        }
+        
+    }else{
+        let errore = document.querySelector('#errore_credenziali');
+        errore.classList.add('errore');
+        errore.classList.remove('hidden');
         e.preventDefault();
     }
 }
@@ -74,11 +97,24 @@ function closeLoginFunction(){
     body.classList.remove('no-scroll');
 }
 
+function logoutClick(){
+    console.log("Logout");
+    fetch('logout.php').then(()=>{
+        window.open('hw1.php', '_self');
+    });
+}
+
 const login = document.querySelector('#login');
+const logout = document.querySelector('#logout');
 const closeLogin = document.querySelector('#closeLogin');
 
-login.addEventListener('click', loginClick);
-closeLogin.addEventListener('click', closeLoginFunction);
+if(login != null){
+    login.addEventListener('click', loginClick);
+    closeLogin.addEventListener('click', closeLoginFunction);
+}
+if(logout != null){
+    logout.addEventListener('click', logoutClick);
+}
 
 let saved = [];
 // Salva la variabile in localStorage
@@ -536,7 +572,7 @@ function onHeadJson(json){
 
 const url_head = `https://oauth.reddit.com/best.json?limit=100`;
 function HeadLoading(){
-    fetch("hw1.php").then(onResponse, onFailure).then(onHeadJson);
+    fetch("token.php").then(onResponse, onFailure).then(onHeadJson);
 }
 
 HeadLoading();

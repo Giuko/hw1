@@ -107,15 +107,28 @@ body{
 .login_main a:hover{
     color: #a0c4f5;
 }
-
 .signup{
-    background-color: white;
+    padding: 10px;
+}
+.signup input{
+    margin-left: 10px;
+    border-style: none;
+    border-radius: 25px;
+    color: white;
+    background-color: #D93A00;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.errore{
+    color: #D93A00;
+    font-weight: bold;
 }
 
 .login_bottom{
     width: 100%;
     height: 96px;
-    margin-top: -250px;
+    margin-top: -200px;
 }
 
 .login_bottom input{
@@ -131,11 +144,11 @@ body{
     cursor: pointer;
 }
 
-.login_bottom input:hover{    
+.login_bottom input:hover, .signup input:hover{    
     background-color: #962900;
 }
 
-.login_bottom input:active{    
+.login_bottom input:active, .signup input:active{    
     background-color: #a74b29;
 }
 
@@ -292,6 +305,7 @@ header{
     background-color: 465357;
 }
 
+
 #login{
     width: 68px;
     height: 40px;
@@ -300,11 +314,29 @@ header{
     margin-left: 8px;
     font-weight: bold;
     align-items: center;
+    cursor: pointer;
 }
 #login:hover{
     background-color: #962900;
 }
 #login:active{
+    background-color: #a74b29;
+}
+
+#logout{
+    width: 68px;
+    height: 40px;
+    background-color: #d93a00;
+    border-radius: 25px;
+    margin-left: 8px;
+    font-weight: bold;
+    align-items: center;
+    cursor: pointer;
+}
+#logout:hover{
+    background-color: #962900;
+}
+#logout:active{
     background-color: #a74b29;
 }
 
