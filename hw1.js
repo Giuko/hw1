@@ -3,6 +3,60 @@ let headContent = Array.from(document.querySelectorAll('#head .item'));
 const sidebarList = document.querySelector('#popular-communities-list');
 const sidebar = document.querySelector('#sidebar');
 
+function contieneMaiuscola(word) {
+    let alfabeto = "ABCDEFGHILJKMNOPQRSTUVWXYZ";
+    for(let i = 0; i < word.length; i++){
+        if(alfabeto.includes(word[i])){
+            return true
+        }
+    }
+    return false;
+}
+
+function contieneNumero(word) {
+    let alfabeto = "0123456789";
+    for(let i = 0; i < word.length; i++){
+        if(alfabeto.includes(word[i])){
+            return true
+        }
+    }
+    return false;
+}
+
+function contieneSimbolo(word) {
+    let alfabeto = "!@#$%^&*()-_=+[{]}|;:,<.>/?";
+    for(let i = 0; i < word.length; i++){
+        if(alfabeto.includes(word[i])){
+            return true
+        }
+    }
+    return false;
+}
+
+function validazione(e){
+    const username = form.username.value;
+    const password = form.password.value;
+    if(username.length == 0 || password.length == 0){
+        alert("Compilare tutti i campi");
+        e.preventDefault();
+    }else if(password.length <= 7){
+        alert("Password troppo corta");
+        e.preventDefault();
+    }else if(!contieneMaiuscola(password)){
+        alert("Password deve contenere almeno una maiuscola");
+        e.preventDefault();
+    }else if(!contieneNumero(password)){
+        alert("Password deve contenere almeno un numero");
+        e.preventDefault();
+    }else if(!contieneSimbolo(password)){
+        alert("Password deve contenere almeno un simbolo");
+        e.preventDefault();
+    }
+}
+
+const form = document.forms['login'];
+form.addEventListener('submit', validazione);
+
 function loginClick(){
     const modal = document.querySelector('#modal-view');
     modal.classList.add('flex');
