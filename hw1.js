@@ -33,7 +33,7 @@ function contieneNumero(word) {
 }
 
 function contieneSimbolo(word) {
-    let alfabeto = "!@#$%^&*()-_=+[{]}|;:,<.>/?";
+    let alfabeto = "!@#£$%^&*()-_=+[{]}|;:,<.>/?";
     for(let i = 0; i < word.length; i++){
         if(alfabeto.includes(word[i])){
             return true
@@ -70,10 +70,13 @@ function validazione(e){
         }
         
     }else{
-        let errore = document.querySelector('#errore_credenziali');
-        errore.classList.add('errore');
-        errore.classList.remove('hidden');
-        e.preventDefault();
+        let cond = (!usernameJson.includes(username)) || (password.length <= 7) || (!contieneMaiuscola(password)) || (!contieneNumero(password)) || (!contieneSimbolo(password));
+        if(cond){
+            let errore = document.querySelector('#errore_credenziali');
+            errore.classList.add('errore');
+            errore.classList.remove('hidden');
+            e.preventDefault();
+        }
     }
 }
 

@@ -1,6 +1,35 @@
 <?php
     session_start();
-    // $_SESSION['username']='test';
+    if(!isset($_SESSION['username'])){
+        $conn = mysqli_connect('localhost', 'root', '','test') or die("Connect failed: " . mysqli_connect_error()); 
+    
+        if(isset($_POST['username']) && isset($_POST['password'])){
+            $azione = $_POST['azione'];
+            $username = mysqli_real_escape_string($conn, $_POST['username']);
+            $password = mysqli_real_escape_string($conn, $_POST['password']);
+            switch ($azione) {
+                case 'Sign Up':
+                    $query = "INSERT INTO `test` VALUES ('$username','$password')";
+                    mysqli_query($conn, $query);
+                    $_SESSION['username'] = $username;
+                    break;
+
+                case 'Log In':
+                    $query = "SELECT * FROM `test` WHERE Username = '$username' AND Password = '$password'";
+                    $res = mysqli_query($conn, $query);
+                    $num = mysqli_num_rows($res);
+                    if($num == 0){
+                        $notFound = 1;
+                    }else{
+                        $_SESSION['username'] = $username;
+                    }
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +46,13 @@
 </head>
 <body>
     <!-- <form action="" method="post" name="login"> -->
-        <section id="modal-view" class="hidden">
+        <?php
+            if(isset($notFound)){
+                echo "<section id='modal-view' class='flex'>";
+            }else{
+                echo "<section id='modal-view' class='hidden'>";
+            }
+        ?>
             <div id="loginForm" class="flex flex-column align-center">
                 <div class="login_top flex flex-end align-center"> <button id="closeLogin">X</button> </div>
 
@@ -25,6 +60,11 @@
                 <div class="login_main">
                     <h1>Log In</h1>
                     <p>By continuing, you agree to our User Agreement and acknowledge that you understand the Privacy Policy.</p>
+                    <?php
+                        if(isset($notFound)){
+                            echo "<p class='errore' id='errore_credenziali'>La password non corrisponde</p>";
+                        }
+                    ?>
                     <p class='hidden' id='errore_credenziali'>Credenziali errate</p>
                     <div>
                         <div class="loginInput">
@@ -37,10 +77,10 @@
                         </div>
                     </div>
                     <div class="signup flex align-center">
-                        New? <input type="submit" value="Sign Up">
+                        New? <input type="submit" name="azione" value="Sign Up">
                     </div>
                 </div>
-                <div class="login_bottom flex flex-center align-center"> <input type="submit" value="Log In"></div>
+                <div class="login_bottom flex flex-center align-center"> <input type="submit" name="azione" value="Log In"></div>
             </form>
             </div>
         </section>
@@ -61,9 +101,7 @@
                 <div class="image"></div>
                 <div class="item">Get app</div>
             </div>
-            <!-- <div class="flex flex-center" id="login">
-                <div  class="item">Log In</div>
-            </div> -->
+            
             <?php
                 if(isset($_SESSION['username'])){
                     echo '<div class="flex flex-center" id="logout">';
