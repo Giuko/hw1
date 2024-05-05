@@ -407,33 +407,6 @@ function onResponse(response){
 };
 
 /*************************************************/
-/*                     TOKEN                     */
-
-let token;
-function onTokenJson(json){
-    token = json.access_token;
-}
-
-function onTokenResponse(response){
-    if(!response.ok){
-        console.log('Token non recuperato');
-        return;
-    }
-    
-    return response.json();
-};
-
-fetch('hw1.php').then(onTokenResponse, onFailure).then(onTokenJson).then(e => {
-    HeadLoading();
-    loadSubreddit();
-    urlMoreContent = `https://www.reddit.com/new.json?limit=100`;
-    firstLoadContent();
-});
-
-/*                     TOKEN                     */
-/*************************************************/
-
-/*************************************************/
 /*                      HEAD                     */
 
 function onIconJson(json){
@@ -506,18 +479,15 @@ function onHeadJson(json){
     });   
 }
 
-const today = new Date();
-const formattedDate = today.toISOString().slice(0, 10);
 const url_head = `https://oauth.reddit.com/best.json?limit=100`;
 function HeadLoading(){
-    fetch(url_head, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    }).then(onResponse, onFailure).then(onHeadJson);
+    fetch("hw1.php").then(onResponse, onFailure).then(onHeadJson);
 }
 
+HeadLoading();
+loadSubreddit();
+urlMoreContent = `https://www.reddit.com/new.json?limit=100`;
+firstLoadContent();
 
 /*                      HEAD                     */
 /*************************************************/

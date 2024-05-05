@@ -19,22 +19,22 @@
     curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     $result = curl_exec($curl);
+    // // curl_close($curl);
+    // echo($result);
+    
+    //Utilizzo
+    $token = json_decode($result)->access_token;
+    $headers = array(
+        "Authorization: Bearer ".$token,
+        "User-Agent: My University website"
+    );
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, 'https://oauth.reddit.com/best.json?limit=100');
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    $result = curl_exec($curl);
+    
     curl_close($curl);
-    echo($result);
-    
-    // //Utilizzo
-    // $token = json_decode($result)->access_token;
-    // $headers = array(
-    //     "Authorization: Bearer ".$token,
-    //     "User-Agent: My University website"
-    // );
-    // $curl = curl_init();
-    // curl_setopt($curl, CURLOPT_URL, 'https://oauth.reddit.com/best.json?limit=100');
-    // curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-    // curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-    // $result = curl_exec($curl);
-    
-    // curl_close($curl);
 
-    // echo "$result";
+    echo "$result";
 ?>
