@@ -18,19 +18,17 @@
             <div id = "navbar-logo"></div>
             <div id = "navbar-reddit"></div>
         </div>
-        <div class="flex flex-center" id="search">
+        <!-- <div class="flex flex-center" id="search">
 
             <input class="flex flex-start" type="text" id="searchbar" src="img/lente.png" placeholder="Search Reddit">
             </input>
-        </div>
+        </div> -->
         <div class="flex" id="setting">
             <div class="flex flex-center" id = "qr">
                 <div class="image"></div>
                 <div class="item">Get app</div>
             </div>
-            <div class="flex flex-center" id="login">
-                <div  class="item">Log In</div>
-            </div>
+            
             <div class="menu flex flex-center">
                 <div class="item flex flex-center">
                     ...
@@ -41,7 +39,7 @@
     <div class="main-container">
         <nav class="flex flex-center">
             <div class="subnav flex flex-start">
-                <a href="hw1.html">    
+                <a href="hw1.php">    
                     <div class="flex flex-start" id="popular">
                         <div class="image"></div>
                         <div class="item">Popular</div>

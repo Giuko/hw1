@@ -121,7 +121,7 @@ if(logout != null){
 
 let saved = [];
 // Salva la variabile in localStorage
-localStorage.setItem('saved', JSON.stringify(saved));
+// localStorage.setItem('saved', JSON.stringify(saved));
 
 let js_object;
 
@@ -682,6 +682,7 @@ function leaveStar(e){
     }
 }
 
+let r;
 function clickStar(e){
     let star = e.target;
     let clicked = star.dataset.click;
@@ -702,10 +703,16 @@ function clickStar(e){
             post['name'] = article.querySelector('.subreddit .name').textContent;
             post['descr'] = article.querySelector('.text').textContent;
             if(article.querySelector('.insert .divImg') !== null){
-                console.log(article.querySelector('.insert .divImg'));
                 post['img'] = article.querySelector('.insert .divImg img').src;
             }
             saved.push(post);
+            fetch('savepost.php',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(post)
+            });
         }
     }else{
         star.innerHTML = '';
@@ -715,9 +722,16 @@ function clickStar(e){
         if(index !== - 1){
             saved.splice(index, 1);
         }
+        fetch('removepost.php',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(post)
+        });
     }
     // Salva la variabile in localStorage
-    localStorage.setItem('saved', JSON.stringify(saved));
+    // localStorage.setItem('saved', JSON.stringify(saved));
 }
 
 /*                   SAVE POST                   */
@@ -726,7 +740,6 @@ function clickStar(e){
 
 /*************************************************/
 /*                      FEED                     */
-let r;
 function loadContent(article, url){
     let index = article.dataset.index;
     fetch(url, {

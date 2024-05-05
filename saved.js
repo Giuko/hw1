@@ -1,8 +1,20 @@
-let saved = localStorage.getItem('saved');
-saved = JSON.parse(saved);
+// let saved = localStorage.getItem('saved');
+// saved = JSON.parse(saved);
+
 
 const feed = document.querySelector('#feed');
 let feedContent = Array.from(document.querySelectorAll('#feed .article'));
+
+let saved = [];
+
+fetch("loadSaved.php").then((response) => {
+    return response.json();
+}).then((json) => {
+    saved = json;
+    for(let i = 0; i < saved.length; i++){
+        createArticle(i);
+    }
+});
 
 /*************************************************/
 /*                   SAVE POST                   */
@@ -53,20 +65,35 @@ function clickStar(e){
             post['icon'] = article.querySelector('.subreddit .icon img').src;
             post['name'] = article.querySelector('.subreddit .name').textContent;
             post['descr'] = article.querySelector('.text').textContent;
-            post['img'] = article.querySelector('img').src;
+            post['img'] = article.querySelector('.insert .divImg img').src;
 
             saved.push(post);
+            fetch('savepost.php',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(post)
+            });
         }
     }else{
         star.innerHTML = '';
         star.textContent = '☆'
         star.dataset.click = "0";
         let index = isSaved(post['id']);
+        
         if(index !== - 1){
             saved.splice(index, 1);
         }
+        fetch('removepost.php',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(post)
+        });
     }
-    localStorage.setItem('saved', JSON.stringify(saved));
+    // localStorage.setItem('saved', JSON.stringify(saved));
 }
 
 /*                   SAVE POST                   */
@@ -76,12 +103,12 @@ function loadSaved(index){
     let article = feedContent[index];
     let post = saved[index];
     
-    let postId = post['id'];
-    let subredditName = post['name'];
-    let subredditIcon = post['icon'];
-    let titleText = post['title'];
-    let descrText = post['descr']
-    let imagePost = post['img'];
+    let postId = post['Id'];
+    let subredditName = post['Name'];
+    let subredditIcon = post['Icon'];
+    let titleText = post['Title'];
+    let descrText = post['Descr']
+    let imagePost = post['Img'];
 
     let externDiv = document.createElement('div');
     externDiv.classList.add('insert');
@@ -132,14 +159,13 @@ function loadSaved(index){
 
     let divImg = document.createElement('div');
     divImg.classList.add('flex');
+    divImg.classList.add('divImg');
     divImg.classList.add('flex-center');
     divImg.classList.add('align-center');
     
     let imgArticle = document.createElement('img');
     
     title.textContent = titleText;
-
-    article.dataset.id = postId;
     
     text.textContent = descrText;
 
@@ -169,14 +195,11 @@ function createArticle(index){
         let item_content = document.createElement('div');
         item.classList.add('item');
         item.dataset.index = feedContent.length + 1;
+        item.dataset.id = saved[index]['id'];
         item_content.classList.add('insert');
         item.appendChild(item_content);
         feedContent.push(item);
         feed.appendChild(item);
     }
     loadSaved(index);
-}
-
-for(let i = 0; i < saved.length; i++){
-    createArticle(i);
 }

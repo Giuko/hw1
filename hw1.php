@@ -25,7 +25,6 @@
                     }
                     break;
                 default:
-                    # code...
                     break;
             }
         }
@@ -147,7 +146,7 @@
                     <div class="flex door">V</div>
                 </div>
                 <hr class="border-neutral-weak">
-                <a href="saved.html">
+                <a href="saved.php">
                     <div class="item-nav flex" data-navtype="resources" data-click="0">
                         <div class="flex">SAVED</div>
                     </div>
