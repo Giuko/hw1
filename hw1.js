@@ -43,37 +43,7 @@ function checkScroll() {
         loadMoreContent();
     }
 }
-
-// Funzione che gestisce la navbar
-function resize(){
-    let width = window.innerWidth;
-
-    if(width < 1200){
-        let nav = document.querySelector('.main-container nav');
-        nav.classList.add('hidden');
-        nav.classList.remove('flex');
-    }else{
-        let nav = document.querySelector('.main-container nav');
-        nav.classList.add('flex');
-        nav.classList.remove('hidden');
-
-        let body = document.querySelector('body');
-        body.classList.remove('no-scroll');
-    }
-
-
-}
-
-if(window.innerWidth < 1200){
-    let nav = document.querySelector('.main-container nav');
-    
-    nav.classList.add('hidden');
-    nav.classList.remove('flex');
-}
-
 window.addEventListener("scroll", checkScroll);
-window.addEventListener('resize', resize)
-
 
 function onClick(){
     let button_previous = document.querySelector('#previous-head');
@@ -140,82 +110,58 @@ function onCLickMore(event){
     t.innerHTML = '';
     sidebarList.innerHTML = '';
 
+    let numToIterate;
     if(t.dataset.mode === 'more'){
         document.querySelector('#sidebar').style.height = '500px';
         t.dataset.mode = 'less';
         div.textContent = 'See less';
 
-        for(let i = 0; i < SUBREDDIT_ICON.length; i++){
-            let item = document.createElement('div');
-            item.classList.add('item');
-            let container = document.createElement('div');
-            container.classList.add('container');
-            container.classList.add('flex');
-            let content = document.createElement('div');
-            content.classList.add('content');
-            content.classList.add('flex');
-            let image = document.createElement('div');
-            image.classList.add('image');
-            let img = document.createElement('img');
-            img.src = SUBREDDIT_ICON[i];
-            let text = document.createElement('div');
-            text.classList.add('text');
-            text.classList.add('flex');
-            let name = document.createElement('div');
-            name.classList.add('name');
-            name.textContent = SUBREDDIT_NAME[i];
-            let members = document.createElement('div');
-            members.classList.add('members');
-            members.textContent = SUBREDDIT_MEMBERS[i];
-            text.appendChild(name);
-            text.appendChild(members);
-            image.appendChild(img);
-            content.appendChild(image);
-            content.appendChild(text);
-            container.appendChild(content);
-            item.appendChild(container);
-            sidebarList.appendChild(item);
-        }
-
-        t.appendChild(div);
+        numToIterate = SUBREDDIT_ICON.length;
     }else{
         document.querySelector('#sidebar').style.height = '394px';
         t.dataset.mode = 'more';
         div.textContent = 'See more';
 
-        for(let i = 0; i < 4; i++){
-            let item = document.createElement('div');
-            item.classList.add('item');
-            let container = document.createElement('div');
-            container.classList.add('container');
-            container.classList.add('flex');
-            let content = document.createElement('div');
-            content.classList.add('content');
-            content.classList.add('flex');
-            let image = document.createElement('div');
-            image.classList.add('image');
-            let img = document.createElement('img');
-            img.src = SUBREDDIT_ICON[i];
-            let text = document.createElement('div');
-            text.classList.add('text');
-            text.classList.add('flex');
-            let name = document.createElement('div');
-            name.classList.add('name');
-            name.textContent = SUBREDDIT_NAME[i];
-            let members = document.createElement('div');
-            members.classList.add('members');
-            members.textContent = SUBREDDIT_MEMBERS[i];
-            text.appendChild(name);
-            text.appendChild(members);
-            image.appendChild(img);
-            content.appendChild(image);
-            content.appendChild(text);
-            container.appendChild(content);
-            item.appendChild(container);
-            sidebarList.appendChild(item);
-        }
-        t.appendChild(div);
+        numToIterate = 4;
     }
+
+    for(let i = 0; i < SUBREDDIT_ICON.length; i++){
+        let item = document.createElement('div');
+        item.classList.add('item');
+        let container = document.createElement('div');
+        container.classList.add('container');
+        container.classList.add('flex');
+        let content = document.createElement('div');
+        content.classList.add('content');
+        content.classList.add('flex');
+        let image = document.createElement('div');
+        image.classList.add('image');
+        let img = document.createElement('img');
+        img.src = SUBREDDIT_ICON[i];
+        let text = document.createElement('div');
+        text.classList.add('text');
+        text.classList.add('flex');
+        let name = document.createElement('div');
+        name.classList.add('name');
+        name.textContent = SUBREDDIT_NAME[i];
+        let members = document.createElement('div');
+        members.classList.add('members');
+        members.textContent = SUBREDDIT_MEMBERS[i];
+        text.appendChild(name);
+        text.appendChild(members);
+        image.appendChild(img);
+        content.appendChild(image);
+        content.appendChild(text);
+        container.appendChild(content);
+        item.appendChild(container);
+        sidebarList.appendChild(item);
+        let link = document.createElement('a');
+        link.href = 'about.php?subreddit='+name.textContent;
+        link.appendChild(item);
+        sidebarList.appendChild(link);
+    }
+
+    t.appendChild(div);
 }
 
 let previous_head = document.querySelector('#previous-head');
@@ -337,7 +283,10 @@ function firstSidebarLoad(){
         content.appendChild(text);
         container.appendChild(content);
         item.appendChild(container);
-        sidebarList.appendChild(item);
+        let link = document.createElement('a');
+        link.href = 'about.php?subreddit='+name.textContent;
+        link.appendChild(item);
+        sidebarList.appendChild(link);
     }
     recentLoad();
 }
@@ -367,7 +316,12 @@ function recentLoad(){
         externDiv.appendChild(divImg);
         externDiv.appendChild(divText);
 
-        recent[i].appendChild(externDiv);
+        let link = document.createElement('a');
+        link.href = 'about.php?subreddit='+divText.textContent;
+        link.appendChild(externDiv);
+        sidebarList.appendChild(link);
+
+        recent[i].appendChild(link);
     }
 }
 
@@ -409,8 +363,11 @@ function useIcon(icon){
     return icon;
 }
 function getIcon(subreddit){
-    let url
-    let icon = fetch(`https://www.reddit.com/r/${subreddit}/about.json`).then(onResponse, onFailure).then(onIconJson).then();   //Con questa API ottengo le icone (non ho bisogno di autentificazione) 
+    
+    let request = `/r/${subreddit}/about.json`;
+    let url = 'fetchNoOauth.php?request='+request; 
+    const icon = fetch(url).then(onResponse, onFailure).then(onIconJson).then();
+    // let icon = fetch(`https://www.reddit.com/r/${subreddit}/about.json`).then(onResponse, onFailure).then(onIconJson).then();   //Con questa API ottengo le icone (non ho bisogno di autentificazione) 
     return icon;
 }
 
@@ -510,25 +467,24 @@ function onBestJson(json){
     }
     let promise = [];
     for(let i = 0; i < visited.length; i++){
-        promise.push(fetch(`https://www.reddit.com/${visited[i]}/about.json`).then(onResponse, onFailure).then(onSubredditInfoJson));
+        const request = `/${visited[i]}/about.json`;
+        const url = 'fetchNoOauth.php?request='+request; 
+        promise.push(fetch(url).then(onResponse, onFailure).then(onSubredditInfoJson));
+        // promise.push(fetch(`https://www.reddit.com/${visited[i]}/about.json`).then(onResponse, onFailure).then(onSubredditInfoJson));
     }         
     Promise.all(promise).then(() => {
         firstSidebarLoad();
     });   
 }
 
-function loadSubreddit(){
-    SUBREDDIT_ICON = [];
-    SUBREDDIT_NAME = [];
-    SUBREDDIT_MEMBERS = [];
-    let subToLoad = 1;
-    let iconPromises = [];
-    
-    const url = `https://oauth.reddit.com/best.json`
-    fetch(url, {
-            method: 'GET'
-        }
-    ).then(onResponse, onFailure).then(onBestJson);    
+function loadSubreddit(){    
+    const request = `/best.json`;
+    const url = 'fetchNoOauth.php?request='+request; 
+    fetch(url).then(onResponse, onFailure).then(onBestJson);
+    // fetch(url, {
+    //         method: 'GET'
+    //     }
+    // ).then(onResponse, onFailure).then(onBestJson);    
 }
 
 /*                 SUBREDDIT                     */
@@ -691,7 +647,13 @@ function loadContent(article, url){
         name.classList.add('name');
         
         let subreddit = json.data.children[index].data.subreddit_name_prefixed;
-        fetch(`https://www.reddit.com/${subreddit}/about.json`).then(onResponse, onFailure).then((json) => {
+        
+        let request = `/${subreddit}/about.json`;
+        let url = 'fetchNoOauth.php?request='+request; 
+        
+
+        // fetch(`https://www.reddit.com/${subreddit}/about.json`).then(onResponse, onFailure).then((json) => {
+        fetch(url).then(onResponse, onFailure).then((json) => {
             let ico = json.data.community_icon;
             let index = ico.indexOf('.png?');
             let ret = "";

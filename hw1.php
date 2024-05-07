@@ -40,6 +40,7 @@
     <link rel="stylesheet" href="hw1.css"><link rel="preconnect" href="https://fonts.googleapis.com">
     <script src="hw1.js" defer></script>
     <script src="login.js" defer></script>
+    <script src="navbar.js" defer></script>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
 
@@ -124,7 +125,7 @@
         <nav class="flex flex-center">
             <div class="subnav flex flex-start">
                 <a href="#">    
-                    <div class="flex flex-start" id="popular">
+                    <div class="flex flex-start active" id="popular">
                         <div class="image"></div>
                         <div class="item">Popular</div>
                     </div>
@@ -140,11 +141,6 @@
                 <div class="item-nav" data-recent="1">
                 </div>
                 <div class="item-nav" data-recent="1">
-                </div>
-                <hr class="border-neutral-weak">
-                <div class="item-nav flex" data-navtype="topics" data-click="0">
-                    <div class="flex">TOPICS</div>
-                    <div class="flex door">V</div>
                 </div>
                 <hr class="border-neutral-weak">
                 <a href="saved.php">

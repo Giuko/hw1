@@ -446,12 +446,16 @@ nav{
     flex-direction: column;
 }
 
+.active{
+    background-color: #1a282d;
+    border-radius: 10px;
+    align-items: center;   
+}
+
 #popular{
+    margin-top: 15px;
     width: 239px;
     height: 40px;
-    background-color: #1a282d;
-    margin-top: 15px;
-    border-radius: 10px;
     align-items: center;   
 }
 
