@@ -3,122 +3,6 @@ let headContent = Array.from(document.querySelectorAll('#head .item'));
 const sidebarList = document.querySelector('#popular-communities-list');
 const sidebar = document.querySelector('#sidebar');
 
-
-
-const usernameJson = [];
-fetch('username.php').then((response) => {return response.json()}).then((json) =>{
-    for(let i = 0; i < json.length; i++){
-        usernameJson.push(json[i].Username);
-    }
-})
-
-function contieneMaiuscola(word) {
-    let alfabeto = "ABCDEFGHILJKMNOPQRSTUVWXYZ";
-    for(let i = 0; i < word.length; i++){
-        if(alfabeto.includes(word[i])){
-            return true
-        }
-    }
-    return false;
-}
-
-function contieneNumero(word) {
-    let alfabeto = "0123456789";
-    for(let i = 0; i < word.length; i++){
-        if(alfabeto.includes(word[i])){
-            return true
-        }
-    }
-    return false;
-}
-
-function contieneSimbolo(word) {
-    let alfabeto = "!@#£$%^&*()-_=+[{]}|;:,<.>/?";
-    for(let i = 0; i < word.length; i++){
-        if(alfabeto.includes(word[i])){
-            return true
-        }
-    }
-    return false;
-}
-let j;
-function validazione(e){
-    const username = form.username.value;
-    const password = form.password.value;
-    const action = e.submitter.value;
-
-    if(username.length == 0 || password.length == 0){
-        alert("Compilare tutti i campi");
-        e.preventDefault();
-    }
-    if(action === "Sign Up"){
-        if(usernameJson.includes(username)){
-            alert("Nome Utente già in uso");
-            e.preventDefault();
-        }else if(password.length <= 7){
-            alert("Password troppo corta");
-            e.preventDefault();
-        }else if(!contieneMaiuscola(password)){
-            alert("Password deve contenere almeno una maiuscola");
-            e.preventDefault();
-        }else if(!contieneNumero(password)){
-            alert("Password deve contenere almeno un numero");
-            e.preventDefault();
-        }else if(!contieneSimbolo(password)){
-            alert("Password deve contenere almeno un simbolo");
-            e.preventDefault();
-        }
-        
-    }else{
-        let cond = (!usernameJson.includes(username)) || (password.length <= 7) || (!contieneMaiuscola(password)) || (!contieneNumero(password)) || (!contieneSimbolo(password));
-        if(cond){
-            let errore = document.querySelector('#errore_credenziali');
-            errore.classList.add('errore');
-            errore.classList.remove('hidden');
-            e.preventDefault();
-        }
-    }
-}
-
-const form = document.forms['login'];
-form.addEventListener('submit', validazione);
-
-function loginClick(){
-    const modal = document.querySelector('#modal-view');
-    modal.classList.add('flex');
-    modal.classList.remove('hidden');
-    modal.style.top= window.scrollY + 'px';
-    const body = document.querySelector('body');
-    body.classList.add('no-scroll');
-}
-
-function closeLoginFunction(){
-    const modal = document.querySelector('#modal-view');
-    modal.classList.remove('flex');
-    modal.classList.add('hidden');
-    const body = document.querySelector('body');
-    body.classList.remove('no-scroll');
-}
-
-function logoutClick(){
-    console.log("Logout");
-    fetch('logout.php').then(()=>{
-        window.open('hw1.php', '_self');
-    });
-}
-
-const login = document.querySelector('#login');
-const logout = document.querySelector('#logout');
-const closeLogin = document.querySelector('#closeLogin');
-
-if(login != null){
-    login.addEventListener('click', loginClick);
-    closeLogin.addEventListener('click', closeLoginFunction);
-}
-if(logout != null){
-    logout.addEventListener('click', logoutClick);
-}
-
 let saved = [];
 // Salva la variabile in localStorage
 // localStorage.setItem('saved', JSON.stringify(saved));
@@ -698,10 +582,28 @@ function clickStar(e){
             star.textContent = '★'
             star.dataset.click = "1";
 
-            post['title'] = article.querySelector('.title').textContent;
-            post['icon'] = article.querySelector('.subreddit .icon img').src;
-            post['name'] = article.querySelector('.subreddit .name').textContent;
-            post['descr'] = article.querySelector('.text').textContent;
+            if(article.querySelector('.title') !== null){
+                post['title'] = article.querySelector('.title').textContent;
+            }else{
+                post['title'] = '';
+            }
+
+            if(article.querySelector('.subreddit .icon img') !== null){
+                post['icon'] = article.querySelector('.subreddit .icon img').src;
+            }else{
+                post['icon'] = '';
+            }
+
+            if(article.querySelector('.subreddit .name') !== null){
+                post['name'] = article.querySelector('.subreddit .name').textContent;
+            }else{
+                post['name'] = '';
+            }
+            if(post['descr'] = article.querySelector('.text') !== null){
+                post['descr'] = article.querySelector('.text').textContent;
+            }else{
+                post['descr'] = '';
+            }
             if(article.querySelector('.insert .divImg') !== null){
                 post['img'] = article.querySelector('.insert .divImg img').src;
             }

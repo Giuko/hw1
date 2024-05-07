@@ -39,6 +39,7 @@
     <link rel="icon" type="image/x-icon" href="img/redditFavicon.png">
     <link rel="stylesheet" href="hw1.css"><link rel="preconnect" href="https://fonts.googleapis.com">
     <script src="hw1.js" defer></script>
+    <script src="login.js" defer></script>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
 
@@ -64,7 +65,7 @@
                             echo "<p class='errore' id='errore_credenziali'>La password non corrisponde</p>";
                         }
                     ?>
-                    <p class='hidden' id='errore_credenziali'>Credenziali errate</p>
+                    <p class='hidden' id='errore_credenziali'></p>
                     <div>
                         <div class="loginInput">
                             <p>Username</p>
@@ -95,11 +96,11 @@
             <input class="flex flex-start" type="text" id="searchbar" src="img/lente.png" placeholder="Search Reddit">
             </input>
         </div>
-        <div class="flex" id="setting">
-            <div class="flex flex-center" id = "qr">
+        <div class="flex space-around" id="setting">
+            <!-- <div class="flex flex-center" id = "qr">
                 <div class="image"></div>
                 <div class="item">Get app</div>
-            </div>
+            </div> -->
             
             <?php
                 if(isset($_SESSION['username'])){
@@ -112,11 +113,11 @@
                     echo '</div>';
                 }
             ?>
-            <div class="menu flex flex-center">
+            <!-- <div class="menu flex flex-center">
                 <div class="item flex flex-center">
                     ...
                 </div>
-            </div>
+            </div> -->
         </div>
     </header>
     <div class="main-container">
