@@ -1,7 +1,7 @@
 const feed = document.querySelector('#feed');
 let feedContent = Array.from(document.querySelectorAll('#feed .article'));
 
-fetch("loadSaved.php").then((response) => {
+fetch("script_php/loadSaved.php").then((response) => {
     return response.json();
 }).then((json) => {
     saved = json;

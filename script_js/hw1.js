@@ -294,7 +294,7 @@ function recentLoad(){
 function getIcon(subreddit){
     
     let request = `/r/${subreddit}/about.json`;
-    let url = 'fetchNoOauth.php?request='+request; 
+    let url = 'script_php/fetchNoOauth.php?request='+request; 
     const icon = fetch(url).then(onResponse, onFailure).then((json) => {
         let ico = getImg(json.data.icon_img);
         if(ico === ""){
@@ -339,7 +339,7 @@ async function onHeadJson(json){
 }
 
 function HeadLoading(){
-    fetch("token.php").then(onResponse, onFailure).then(onHeadJson);
+    fetch("script_php/token.php").then(onResponse, onFailure).then(onHeadJson);
 }
 /* #endregion */
 
@@ -370,7 +370,7 @@ function onBestJson(json){
     let promise = [];
     for(let i = 0; i < visited.length; i++){
         const request = `/${visited[i]}/about.json`;
-        const url = 'fetchNoOauth.php?request='+request; 
+        const url = 'script_php/fetchNoOauth.php?request='+request; 
         promise.push(fetch(url).then(onResponse, onFailure).then(onSubredditInfoJson));
         // promise.push(fetch(`https://www.reddit.com/${visited[i]}/about.json`).then(onResponse, onFailure).then(onSubredditInfoJson));
     }         
@@ -381,7 +381,7 @@ function onBestJson(json){
 
 function loadSubreddit(){    
     const request = `/best.json`;
-    const url = 'fetchNoOauth.php?request='+request; 
+    const url = 'script_php/fetchNoOauth.php?request='+request; 
     fetch(url).then(onResponse, onFailure).then(onBestJson);
 }
 /* #endregion */

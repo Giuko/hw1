@@ -1,4 +1,4 @@
-const endpoint = 'fetchNoOauth.php?request=';
+const endpoint = 'script_php/fetchNoOauth.php?request=';
 const request = '/'+document.querySelector('#subredditInfo').dataset.info + '/about.json';
 const url = endpoint + request;
 

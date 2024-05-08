@@ -36,15 +36,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reddit</title>
-    <link rel="icon" type="image/x-icon" href="img/redditFavicon.png">
-    <link rel="stylesheet" href="hw1.css"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="icon" type="image/x-icon" href="style/img/redditFavicon.png">
+    <link rel="stylesheet" href="style/style.css"><link rel="preconnect" href="https://fonts.googleapis.com">
     <?php
         if(isset($_SESSION['username'])){
-            echo "<script src='saved.js' defer></script>";
+            echo "<script src='script_js/saved.js' defer></script>";
         }
     ?>
-    <script src='login.js' defer></script>
-    <script src='utils.js' defer></script>
+    <script src='script_js/login.js' defer></script>
+    <script src='script_js/utils.js' defer></script>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
 

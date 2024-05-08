@@ -113,7 +113,7 @@ function clickStar(e){
                 post['img'] = article.querySelector('.insert .divImg img').src;
             }
             saved.push(post);
-            fetch('savepost.php',{
+            fetch('script_php/savepost.php',{
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -129,7 +129,7 @@ function clickStar(e){
         if(index !== - 1){
             saved.splice(index, 1);
         }
-        fetch('removepost.php',{
+        fetch('script_php/removepost.php',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

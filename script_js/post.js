@@ -16,7 +16,7 @@ async function loadPosts(value){
     console.log("Loading topic: " + value);
     const posts = [];
     const query = `/search.json?q=${value}&limit=25`
-    const url = 'fetchNoOauth.php?request=' + query+'';
+    const url = 'script_php/fetchNoOauth.php?request=' + query+'';
     
     try{
         json = await fetch(url).then(onResponse, onFailure);
@@ -37,7 +37,7 @@ async function loadPosts(value){
             const subreddit = info.subreddit_name_prefixed;
         
             const subreddit_request = `/${subreddit}/about.json`;
-            const subreddit_url = 'fetchNoOauth.php?request='+subreddit_request; 
+            const subreddit_url = 'script_php/fetchNoOauth.php?request='+subreddit_request; 
             let ico = '';
             const jsonSubreddit = await fetch(subreddit_url).then(onResponse, onFailure)
             

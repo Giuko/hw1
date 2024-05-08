@@ -1,5 +1,5 @@
 const usernameJson = [];
-fetch('username.php').then((response) => {return response.json()}).then((json) =>{
+fetch('script_php/username.php').then((response) => {return response.json()}).then((json) =>{
     for(let i = 0; i < json.length; i++){
         usernameJson.push(json[i].Username);
     }
@@ -107,8 +107,8 @@ function closeLoginFunction(){
 
 function logoutClick(){
     console.log("Logout");
-    fetch('logout.php').then(()=>{
-        window.open('hw1.php', '_self');
+    fetch('script_php/logout.php').then(()=>{
+        window.open('script_php/hw1.php', '_self');
     });
 }
 
