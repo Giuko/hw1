@@ -38,9 +38,10 @@
     <title>Reddit</title>
     <link rel="icon" type="image/x-icon" href="img/redditFavicon.png">
     <link rel="stylesheet" href="hw1.css"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <script src="utils.js" defer></script>
+    <script src="post.js"></script>
     <script src="hw1.js" defer></script>
     <script src="login.js" defer></script>
-    <script src="navbar.js" defer></script>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
 
@@ -148,6 +149,7 @@
                         <div class="flex">SAVED</div>
                     </div>
                 </a>
+            </div>
             </div> 
         </nav>
         <div class="container flex flex-center">

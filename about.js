@@ -2,57 +2,12 @@ const endpoint = 'fetchNoOauth.php?request=';
 const request = '/'+document.querySelector('#subredditInfo').dataset.info + '/about.json';
 const url = endpoint + request;
 
-
-
-function onFailure(e){
-    console.log("Errore: " + e);
-};
-
-function onResponse(response){
-    if(!response.ok){
-        console.log('Response non recuperato');
-        return;
-    }
-    
-    return response.json();
-};
-
-let view;
-
-function getImg(url){    
-    let ret = "";
-    if(ret === ""){
-        let index = url.indexOf('.png?');
-        if(index > 0){
-            url = url.substring(0, index+4);
-            ret = url;
-        }
-    }
-    if(ret === ""){
-        let index = url.indexOf('.jpg?');
-        if(index > 0){
-            url = url.substring(0, index+4);
-            ret = url;
-        }
-    }
-    if(ret === ""){
-        let index = url.indexOf('.jpeg?');
-        if(index > 0){
-            url = url.substring(0, index+5);
-            ret = url;
-        }
-    }
-    if(ret === ""){
-        ret = url;
-    }
-    return ret;
-}
-
 function getInfo(){
     fetch(url).then(onResponse, onFailure).then((json) => {
         const title = json.data.title;
         let icon = json.data.icon_img;
         const descr = json.data.public_description;
+        const descr2 = json.data.submit_text;
         let banner = json.data.banner_background_image;
 
         const titleDiv = document.querySelector('.title');
@@ -60,6 +15,11 @@ function getInfo(){
 
         const descrDiv = document.querySelector('#descr');
         descrDiv.textContent = descr;
+
+        const descr2Div = document.querySelector('#descr2');
+        descr2Div.textContent = descr2;
+
+        console.log(descr2);
 
         const bannerDiv = document.querySelector('#banner');
 

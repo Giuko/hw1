@@ -1,6 +1,10 @@
 <?php
     $endpoint = 'https://www.reddit.com';
     $request = $_GET['request'];
+    if(isset($_GET['limit'])){
+        $limit = $_GET['limit'];
+        $request.="&limit=".$limit;
+    }
 
     $headers = array(
         "User-Agent: My University website"

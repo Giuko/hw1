@@ -40,8 +40,8 @@
     <link rel="stylesheet" href="hw1.css">
     <link rel="stylesheet" href="about.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <script src='utils.js' defer></script>
     <script src='login.js' defer></script>
-    <script src='navbar.js' defer></script>
     <script src='about.js' defer></script>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
@@ -150,6 +150,8 @@
                         <h2 class='prefix'>ABOUT COMMUNITY</h2>
                         <h2 class='title'></h2>
                         <p id='descr'></p>
+                        <hr class="border-neutral-weak">
+                        <p id='descr2'></p>
                     </div>
                 </div>
             </div>

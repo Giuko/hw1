@@ -1,49 +1,32 @@
-let feedContent = Array.from(document.querySelectorAll('#feed article'));
+const feed = document.querySelector('#feed');
+const feedContent = Array.from(document.querySelectorAll('#feed article'));
 let headContent = Array.from(document.querySelectorAll('#head .item'));
 const sidebarList = document.querySelector('#popular-communities-list');
 const sidebar = document.querySelector('#sidebar');
 
-let saved = [];
-// Salva la variabile in localStorage
-// localStorage.setItem('saved', JSON.stringify(saved));
+const head_array = [];
+const subreddit_array = [];
+let post_array = [];
 
-let js_object;
 
-let HEAD_ARTICLE = [];
-let HEAD_ARTICLE_TITLE = [];
-let HEAD_ARTICLE_DESCRIPTION = [];
-let HEAD_ARTICLE_NAME = [];
-let HEAD_ARTICLE_ICON = [];
-
-let SUBREDDIT_ICON = [];
-let SUBREDDIT_NAME = [];
-let SUBREDDIT_MEMBERS = [];
-
-// Funzione per controllare se l'utente ha raggiunto il fondo della pagina
-function checkScroll() {
-    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    const windowHeight = window.innerHeight;
-    const bodyHeight = document.body.offsetHeight;
-
-    if(sidebar.dataset.position === "1" ){
-        sidebar.dataset.position === "0";
-        if(scrollTop <  235){
-            sidebar.style.marginTop = 15 + 'px';
-            sidebar.classList.remove('sticky');
-        }
-    }else{
-        sidebar.dataset.position === "1";
-        if(scrollTop >= 235){
-            sidebar.classList.add('sticky');
-        }
-    }
-
-    // Se l'utente ha raggiunto il fondo della pagina
-    if (scrollTop + windowHeight >= bodyHeight) {
-        loadMoreContent();
+class Head{
+    constructor(article, title, description, name, icon){
+        this.article = article;
+        this.title = title;
+        this.description = description;
+        this.name = name;
+        this.icon = icon;
     }
 }
-window.addEventListener("scroll", checkScroll);
+
+class Subreddit{
+    constructor(icon, name, members){
+        this.icon = icon;
+        this.name = name;
+        this.members = members;
+    }
+}
+
 
 function onClick(){
     let button_previous = document.querySelector('#previous-head');
@@ -58,11 +41,11 @@ function onClick(){
 
         for(let item of items){
             let index = parseInt(item.dataset.index);
-            item.style.backgroundImage = HEAD_ARTICLE[index];
-            item.querySelector('.title').textContent = HEAD_ARTICLE_TITLE[index];
-            item.querySelector('.description').textContent = HEAD_ARTICLE_DESCRIPTION[index];
-            item.querySelector('.name').textContent = HEAD_ARTICLE_NAME[index];
-            item.querySelector('img').src = HEAD_ARTICLE_ICON[index];
+            item.style.backgroundImage = head_array[index].article;
+            item.querySelector('.title').textContent = head_array[index].title;
+            item.querySelector('.description').textContent = head_array[index].description;
+            item.querySelector('.name').textContent = head_array[index].name;
+            item.querySelector('img').src = head_array[index].icon;
         }
     }else{        
         button_previous.classList.add('hidden');
@@ -70,17 +53,17 @@ function onClick(){
 
         for(let item of items){
             let index = parseInt(item.dataset.index) - 1;
-            item.style.backgroundImage = HEAD_ARTICLE[index];
-            item.querySelector('.title').textContent = HEAD_ARTICLE_TITLE[index];
-            item.querySelector('.description').textContent = HEAD_ARTICLE_DESCRIPTION[index];
-            item.querySelector('.name').textContent = HEAD_ARTICLE_NAME[index];
-            item.querySelector('img').src = HEAD_ARTICLE_ICON[index];
+            item.style.backgroundImage = head_array[index].article;
+            item.querySelector('.title').textContent = head_array[index].title;
+            item.querySelector('.description').textContent = head_array[index].description;
+            item.querySelector('.name').textContent = head_array[index].name;
+            item.querySelector('img').src = head_array[index].icon;
         }
     }
 
 }
 
-let urlMoreContent;
+
 
 function loadMoreContent(){
     let feed = document.querySelector('#feed');
@@ -94,7 +77,7 @@ function loadMoreContent(){
         item.appendChild(item_content);
         feedContent.push(item);
         feed.appendChild(item);
-        loadContent(item, urlMoreContent);
+        loadContent();
     }
 }
 
@@ -116,7 +99,7 @@ function onCLickMore(event){
         t.dataset.mode = 'less';
         div.textContent = 'See less';
 
-        numToIterate = SUBREDDIT_ICON.length;
+        numToIterate = subreddit_array.length;
     }else{
         document.querySelector('#sidebar').style.height = '394px';
         t.dataset.mode = 'more';
@@ -125,7 +108,7 @@ function onCLickMore(event){
         numToIterate = 4;
     }
 
-    for(let i = 0; i < SUBREDDIT_ICON.length; i++){
+    for(let i = 0; i < numToIterate; i++){
         let item = document.createElement('div');
         item.classList.add('item');
         let container = document.createElement('div');
@@ -137,16 +120,16 @@ function onCLickMore(event){
         let image = document.createElement('div');
         image.classList.add('image');
         let img = document.createElement('img');
-        img.src = SUBREDDIT_ICON[i];
+        img.src = subreddit_array[i].icon;
         let text = document.createElement('div');
         text.classList.add('text');
         text.classList.add('flex');
         let name = document.createElement('div');
         name.classList.add('name');
-        name.textContent = SUBREDDIT_NAME[i];
+        name.textContent = subreddit_array[i].name;
         let members = document.createElement('div');
         members.classList.add('members');
-        members.textContent = SUBREDDIT_MEMBERS[i];
+        members.textContent = subreddit_array[i].members;
         text.appendChild(name);
         text.appendChild(members);
         image.appendChild(img);
@@ -177,9 +160,11 @@ more.addEventListener("click", onCLickMore)
 function onEnterSearch(e){
     if(e.key === "Enter"){
         let value = searchbar.value;
-        value = encodeURIComponent(value);
-        urlMoreContent = `https://www.reddit.com/search.json?q=${value}&limit=100`;
-        firstLoadContent();
+        loadPosts(value).then((value) => {
+            post_array = value;
+            console.log('Post loaded');
+            loadContent();
+        });
     }
 }
 
@@ -187,26 +172,6 @@ const searchbar = document.querySelector('#searchbar');
 searchbar.addEventListener("keyup", onEnterSearch)
 
 
-function clickMenu(e){
-    let shown = e.target.dataset.click;
-    let nav = document.querySelector('.main-container nav');
-    let body = document.querySelector('body');
-    if(shown === '0'){ 
-        e.target.dataset.click = '1';
-        nav.classList.add('flex');
-        nav.classList.remove('hidden');
-        nav.style.zIndex=1;
-        body.classList.add('no-scroll');
-    }else{
-        e.target.dataset.click = '0';
-        nav.classList.add('hidden');
-        nav.classList.remove('flex');
-        body.classList.remove('no-scroll');
-    }
-}
-
-const navbar_menu = document.querySelector('#navbar-menu');
-navbar_menu.addEventListener('click', clickMenu);
 
 
 
@@ -241,11 +206,11 @@ function firstHeadLoad(){
     let items = document.querySelectorAll('#head .item');
     for(let item of items){
         let index = parseInt(item.dataset.index) - 1;
-        item.style.backgroundImage = HEAD_ARTICLE[index];
-        item.querySelector('.title').textContent = HEAD_ARTICLE_TITLE[index];
-        item.querySelector('.description').textContent = HEAD_ARTICLE_DESCRIPTION[index];
-        item.querySelector('.name').textContent = HEAD_ARTICLE_NAME[index];
-        item.querySelector('img').src = HEAD_ARTICLE_ICON[index];
+        item.style.backgroundImage = head_array[index].article;
+        item.querySelector('.title').textContent = head_array[index].title;
+        item.querySelector('.description').textContent = head_array[index].description;
+        item.querySelector('.name').textContent = head_array[index].name;
+        item.querySelector('img').src = head_array[index].icon;
     }   
 }
 
@@ -266,16 +231,16 @@ function firstSidebarLoad(){
         let image = document.createElement('div');
         image.classList.add('image');
         let img = document.createElement('img');
-        img.src = SUBREDDIT_ICON[i];
+        img.src = subreddit_array[i].icon;;
         let text = document.createElement('div');
         text.classList.add('text');
         text.classList.add('flex');
         let name = document.createElement('div');
         name.classList.add('name');
-        name.textContent = SUBREDDIT_NAME[i];
+        name.textContent = subreddit_array[i].name;
         let members = document.createElement('div');
         members.classList.add('members');
-        members.textContent = SUBREDDIT_MEMBERS[i];
+        members.textContent = subreddit_array[i].members;
         text.appendChild(name);
         text.appendChild(members);
         image.appendChild(img);
@@ -303,7 +268,7 @@ function recentLoad(){
         let divImg = document.createElement('div');
         divImg.classList.add('image');
         let img = document.createElement('img');
-        img.src = SUBREDDIT_ICON[i];
+        img.src = subreddit_array[i].icon;
         divImg.appendChild(img);
 
         let divText = document.createElement('div');
@@ -311,7 +276,7 @@ function recentLoad(){
         divText.classList.add('flex');
         divText.classList.add('align-center');
         divText.classList.add('flex-start');
-        divText.textContent = SUBREDDIT_NAME[i];
+        divText.textContent = subreddit_array[i].name;
 
         externDiv.appendChild(divImg);
         externDiv.appendChild(divText);
@@ -325,59 +290,29 @@ function recentLoad(){
     }
 }
 
-function onFailure(e){
-    console.log("Errore: " + e);
-};
-
-function onResponse(response){
-    if(!response.ok){
-        console.log('Response non recuperato');
-        return;
-    }
-    
-    return response.json();
-};
-
-/*************************************************/
-/*                      HEAD                     */
-
-function onIconJson(json){
-    let ico = json.data.community_icon;
-    let index = ico.indexOf('.png?');
-    let ret = "";
-    if(index > 0){
-        ret = ico.substring(0, index+4);
-    }
-    if(ret === ""){
-        index = ico.indexOf('.jpg?');
-        if(index > 0){
-            ret = ico.substring(0, index+4);
-        }
-    }
-    if(ret === ""){
-        ret = json.data.icon_img;
-    }
-    return ret;
-}
-function useIcon(icon){
-    return icon;
-}
+/* #region ==== HEAD ==== */
 function getIcon(subreddit){
     
     let request = `/r/${subreddit}/about.json`;
     let url = 'fetchNoOauth.php?request='+request; 
-    const icon = fetch(url).then(onResponse, onFailure).then(onIconJson).then();
-    // let icon = fetch(`https://www.reddit.com/r/${subreddit}/about.json`).then(onResponse, onFailure).then(onIconJson).then();   //Con questa API ottengo le icone (non ho bisogno di autentificazione) 
+    const icon = fetch(url).then(onResponse, onFailure).then((json) => {
+        let ico = getImg(json.data.icon_img);
+        if(ico === ""){
+            ico = getImg(json.data.community_icon);
+        }
+        return ico;
+    });
     return icon;
 }
 
-function onHeadJson(json){
+async function onHeadJson(json){
     let nels = json.data.dist;
-    let elements = json.data;
+    
     const array = [];
     for(let i = 0; i < nels; i++){
         let t = json.data.children[i].data.thumbnail;
-        if(t.endsWith('.jpg')){
+        
+        if(t.endsWith('.jpg') || t.endsWith('.jpeg') || t.endsWith('.png')){
             array.push(json.data.children[i]);
         }
     }
@@ -386,12 +321,6 @@ function onHeadJson(json){
         nelsFiltered = 5;
     }
     
-    HEAD_ARTICLE = [];
-    HEAD_ARTICLE_TITLE = [];
-    HEAD_ARTICLE_DESCRIPTION = [];
-    HEAD_ARTICLE_ICON = [];
-    HEAD_ARTICLE_NAME = [];
-    let iconPromises = [];
     for(let i = 0; i < nelsFiltered; i++){
         let text = array[i].data.title;
         const title = text.substring(0, 15);
@@ -400,61 +329,34 @@ function onHeadJson(json){
         if(text.length >= 33){
             text = text.substring(0, 30) + "...";
         }
-        iconPromises.push(getIcon(array[i].data.subreddit).then(iconUrl =>{
-            HEAD_ARTICLE_ICON.push(iconUrl);
-            HEAD_ARTICLE.push("url("+thumbnail+")");
-            HEAD_ARTICLE_DESCRIPTION.push(text);
-            HEAD_ARTICLE_NAME.push(subreddit);
-            HEAD_ARTICLE_TITLE.push(title);
-        }));  // Con questo riesco ad accedere al valore della promise, inoltre faccio il push della promise
+        await getIcon(array[i].data.subreddit).then(iconUrl =>{
+            head = new Head(`url(${thumbnail})`,title, text, subreddit, iconUrl);
+            head_array.push(head);
+        })
     }
-    //In questo modo attendo tutte promise (ovvero le getIcon) e poi posso usarle senza problemi
-    Promise.all(iconPromises).then(() => {
-        firstHeadLoad();
-    });   
+    
+    firstHeadLoad();
 }
 
-const url_head = `https://oauth.reddit.com/best.json?limit=100`;
 function HeadLoading(){
     fetch("token.php").then(onResponse, onFailure).then(onHeadJson);
 }
+/* #endregion */
 
-HeadLoading();
-loadSubreddit();
-urlMoreContent = `https://www.reddit.com/new.json?limit=100`;
-firstLoadContent();
-
-/*                      HEAD                     */
-/*************************************************/
-
-/*************************************************/
-
-/*                 SUBREDDIT                     */
-
-
-
+/* #region ==== SUBREDDIT ==== */
 function onSubredditInfoJson(json){
     
-    let ico = json.data.community_icon;
-    let index = ico.indexOf('.png?');
-    let ret = "";
-    if(index > 0){
-        ret = ico.substring(0, index+4);
-    }
-    if(ret === ""){
-        index = ico.indexOf('.jpg?');
-        if(index > 0){
-            ret = ico.substring(0, index+4);
-        }
-    }
-    if(ret === ""){
-        ret = json.data.icon_img;
+    let icon = getImg(json.data.community_icon);
+    if(icon === ""){
+        icon = getImg(json.data.icon_img);
     }
 
+    const name = 'r/'+json.data.display_name;
+    const members = json.data.subscribers.toLocaleString('it-IT') + " members"; //Per portare il numero in una stringa con la separazione delle migliaia con i punti
+
+    subreddit = new Subreddit(icon, name, members);
+    subreddit_array.push(subreddit);
     
-    SUBREDDIT_ICON.push(ret);    
-    SUBREDDIT_NAME.push('r/'+json.data.display_name);
-    SUBREDDIT_MEMBERS.push(json.data.subscribers.toLocaleString('it-IT') + " members");
 }
 
 function onBestJson(json){
@@ -481,132 +383,22 @@ function loadSubreddit(){
     const request = `/best.json`;
     const url = 'fetchNoOauth.php?request='+request; 
     fetch(url).then(onResponse, onFailure).then(onBestJson);
-    // fetch(url, {
-    //         method: 'GET'
-    //     }
-    // ).then(onResponse, onFailure).then(onBestJson);    
 }
+/* #endregion */
 
-/*                 SUBREDDIT                     */
-/*************************************************/
+/* #region ==== FEED ==== */
+function loadContent(){
+    for(let i = 0; i < feedContent.length; i++){
+        const article = feedContent[i];
+        const index = (article.dataset.index - 1) % post_array.length;
 
+        const id_post = post_array[index].id;
+        const title_post = post_array[index].title;
+        const content_post = post_array[index].content;
+        const thumb_post = post_array[index].thumb;
+        const subreddit_icon_post = post_array[index].subreddit['icon'];
+        const subreddit_name_post = post_array[index].subreddit['name'];
 
-
-/*************************************************/
-/*                   SAVE POST                   */
-
-function isSaved(id){
-    for(let i = 0; i < saved.length; i++){
-        if(id == saved[i].id){
-            return i;
-        }
-    }
-    return -1;
-}
-
-function enterStar(e){
-    let star = e.target;
-    let clicked = star.dataset.click;
-    if(clicked === "0"){
-        star.innerHTML = '';
-        star.textContent ='★'
-    } 
-}
-
-function leaveStar(e){
-    let star = e.target;
-    let clicked = star.dataset.click;
-    if(clicked === "0"){
-        star.innerHTML = '';
-        star.textContent = '☆'
-    }
-}
-
-let r;
-function clickStar(e){
-    let star = e.target;
-    let clicked = star.dataset.click;
-
-    let article = star.parentElement.parentElement;
-    res = article;
-
-    let post = {};
-    post['id'] = article.parentElement.dataset.id;
-    if(clicked === "0"){
-        if(isSaved(post['id']) === -1){
-            star.innerHTML = '';
-            star.textContent = '★'
-            star.dataset.click = "1";
-
-            if(article.querySelector('.title') !== null){
-                post['title'] = article.querySelector('.title').textContent;
-            }else{
-                post['title'] = '';
-            }
-
-            if(article.querySelector('.subreddit .icon img') !== null){
-                post['icon'] = article.querySelector('.subreddit .icon img').src;
-            }else{
-                post['icon'] = '';
-            }
-
-            if(article.querySelector('.subreddit .name') !== null){
-                post['name'] = article.querySelector('.subreddit .name').textContent;
-            }else{
-                post['name'] = '';
-            }
-            if(post['descr'] = article.querySelector('.text') !== null){
-                post['descr'] = article.querySelector('.text').textContent;
-            }else{
-                post['descr'] = '';
-            }
-            if(article.querySelector('.insert .divImg') !== null){
-                post['img'] = article.querySelector('.insert .divImg img').src;
-            }
-            saved.push(post);
-            fetch('savepost.php',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(post)
-            });
-        }
-    }else{
-        star.innerHTML = '';
-        star.textContent = '☆'
-        star.dataset.click = "0";
-        let index = isSaved(post['id']);
-        if(index !== - 1){
-            saved.splice(index, 1);
-        }
-        fetch('removepost.php',{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(post)
-        });
-    }
-    // Salva la variabile in localStorage
-    // localStorage.setItem('saved', JSON.stringify(saved));
-}
-
-/*                   SAVE POST                   */
-/*************************************************/
-
-
-/*************************************************/
-/*                      FEED                     */
-function loadContent(article, url){
-    let index = article.dataset.index;
-    fetch(url, {
-            method: 'GET'
-        }
-    ).then(onResponse, onFailure).then((json) => {
-        index = (index-1) % json.data.dist;
-        let feed = document.querySelector('#feed');
-        let feedContent = Array.from(document.querySelectorAll('#feed article'));
         article.innerHTML = '';
 
         let externDiv = document.createElement('div');
@@ -643,40 +435,14 @@ function loadContent(article, url){
 
 
         let img = document.createElement('img');
+        img.src = subreddit_icon_post;
+
+        icon.appendChild(img);
+
         let name = document.createElement('div');
         name.classList.add('name');
+        name.textContent = subreddit_name_post;
         
-        let subreddit = json.data.children[index].data.subreddit_name_prefixed;
-        
-        let request = `/${subreddit}/about.json`;
-        let url = 'fetchNoOauth.php?request='+request; 
-        
-
-        // fetch(`https://www.reddit.com/${subreddit}/about.json`).then(onResponse, onFailure).then((json) => {
-        fetch(url).then(onResponse, onFailure).then((json) => {
-            let ico = json.data.community_icon;
-            let index = ico.indexOf('.png?');
-            let ret = "";
-            if(index > 0){
-                ret = ico.substring(0, index+4);
-            }
-            if(ret === ""){
-                index = ico.indexOf('.jpg?');
-                if(index > 0){
-                    ret = ico.substring(0, index+4);
-                }
-            }
-            if(ret === ""){
-                ret = json.data.icon_img;
-            }
-
-            
-            img.src = ret;    
-            icon.appendChild(img);
-            name.textContent = 'r/'+json.data.display_name
-        });
-
-
         let title = document.createElement('div');
         title.classList.add('title');
 
@@ -690,19 +456,15 @@ function loadContent(article, url){
         divImg.classList.add('align-center');
         
         let imgArticle = document.createElement('img');
-        // imgArticle.src = json.data.children[index].data.thumbnail;
+        
         // imgArticle.width = json.data.children[index].data.thumbnail_width;
         // imgArticle.height = json.data.children[index].data.thumbnail_height;
 
-        title.textContent = json.data.children[index].data.title;
+        title.textContent = title_post;
 
-        article.dataset.id = json.data.children[index].data.id;
-
-        let content= json.data.children[index].data.selftext;
-        if(content.length > 403){
-            content = content.substring(0, 400) + "...";
-        }
-        text.textContent = content;
+        article.dataset.id = id_post;
+        
+        text.textContent = content_post;
 
 
         subDiv1.appendChild(icon);
@@ -714,64 +476,28 @@ function loadContent(article, url){
         externDiv.appendChild(subred);
         externDiv.appendChild(title);
         externDiv.appendChild(text);
-        let thumb = json.data.children[index].data.thumbnail;
-
-
-        let indexStr = url.indexOf('.png');
-        let ret = "";
-        if(indexStr > 0){
-            ret = thumb.substring(0, indexStr+4);
-        }
-        if(ret === ""){
-            indexStr = thumb.indexOf('.jpg');
-            if(indexStr > 0){
-                ret = thumb.substring(0, indexStr+4);
-            }
-        }
-        if(ret === ""){
-            indexStr = thumb.indexOf('.jpeg');
-            if(indexStr > 0){
-                ret = thumb.substring(0, indexStr+4);
-            }
-        }
-        thumb = ret;
-        if(thumb !== ''){
-            let url = json.data.children[index].data.url;
-
-            indexStr = url.indexOf('.png');
-            ret = "";
-            if(indexStr > 0){
-                ret = url.substring(0, indexStr+4);
-            }
-            if(ret === ""){
-                indexStr = url.indexOf('.jpg');
-                if(indexStr > 0){
-                    ret = url.substring(0, indexStr+4);
-                }
-            }
-            if(ret === ""){
-                indexStr = url.indexOf('.jpeg');
-                if(indexStr > 0){
-                    ret = url.substring(0, indexStr+5);
-                }
-            }
-            if(ret === ''){
-                ret = thumb;
-            }
-            imgArticle.src = ret;
+        
+        if(thumb_post !== ''){
+            imgArticle.src = thumb_post;
             divImg.appendChild(imgArticle);
             externDiv.appendChild(divImg); 
         }
-        article.appendChild(externDiv);
 
-    }); 
-}
-function firstLoadContent(){
-    let url = urlMoreContent;
-    for(let i = 0; i < feedContent.length; i++){
-        loadContent(feedContent[i], url);
+        const link = document.createElement('a');
+        link.href = 'https://www.reddit.com/r/AskDocs/comments/' + article.dataset.id;
+        link.appendChild(externDiv);
+        article.appendChild(link);
+        
     }
 }
+/* #endregion */
 
-/*                      FEED                     */
-/*************************************************/
+
+HeadLoading();
+loadSubreddit();
+
+loadPosts('new').then((value) => {
+    post_array = value;
+    console.log('Post loaded');
+    loadContent();
+});

@@ -1,11 +1,5 @@
-// let saved = localStorage.getItem('saved');
-// saved = JSON.parse(saved);
-
-
 const feed = document.querySelector('#feed');
 let feedContent = Array.from(document.querySelectorAll('#feed .article'));
-
-let saved = [];
 
 fetch("loadSaved.php").then((response) => {
     return response.json();
@@ -16,94 +10,11 @@ fetch("loadSaved.php").then((response) => {
     }
 });
 
-/*************************************************/
-/*                   SAVE POST                   */
-
-function isSaved(id){
-    for(let i = 0; i < saved.length; i++){
-        if(id == saved[i].id){
-            return i;
-        }
-    }
-    return -1;
-}
-
-function enterStar(e){
-    let star = e.target;
-    let clicked = star.dataset.click;
-    if(clicked === "0"){
-        star.innerHTML = '';
-        star.textContent ='★'
-    } 
-}
-
-function leaveStar(e){
-    let star = e.target;
-    let clicked = star.dataset.click;
-    if(clicked === "0"){
-        star.innerHTML = '';
-        star.textContent = '☆'
-    }
-}
-
-function clickStar(e){
-    let star = e.target;
-    let clicked = star.dataset.click;
-
-    let article = star.parentElement.parentElement;
-    res = article;
-
-    let post = {};
-    post['id'] = article.parentElement.dataset.id;
-    if(clicked === "0"){
-        if(isSaved(post['id']) === -1){
-            star.innerHTML = '';
-            star.textContent = '★'
-            star.dataset.click = "1";
-
-            post['title'] = article.querySelector('.title').textContent;
-            post['icon'] = article.querySelector('.subreddit .icon img').src;
-            post['name'] = article.querySelector('.subreddit .name').textContent;
-            post['descr'] = article.querySelector('.text').textContent;
-            post['img'] = article.querySelector('.insert .divImg img').src;
-
-            saved.push(post);
-            fetch('savepost.php',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(post)
-            });
-        }
-    }else{
-        star.innerHTML = '';
-        star.textContent = '☆'
-        star.dataset.click = "0";
-        let index = isSaved(post['id']);
-        
-        if(index !== - 1){
-            saved.splice(index, 1);
-        }
-        fetch('removepost.php',{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(post)
-        });
-    }
-    // localStorage.setItem('saved', JSON.stringify(saved));
-}
-
-/*                   SAVE POST                   */
-/*************************************************/
-
 function loadSaved(index){
     let article = feedContent[index];
     let post = saved[index];
     
-    let postId = post['Id'];
+    let postId = post['id'];
     let subredditName = post['Name'];
     let subredditIcon = post['Icon'];
     let titleText = post['Title'];
@@ -184,7 +95,11 @@ function loadSaved(index){
         divImg.appendChild(imgArticle);
     }
     externDiv.appendChild(divImg); 
-    article.appendChild(externDiv);     
+    const link = document.createElement('a');
+    link.href = 'https://www.reddit.com/r/AskDocs/comments/' + postId;
+    link.appendChild(externDiv);
+    article.dataset.id = postId;
+    article.appendChild(link); 
 }
 
 function createArticle(index){

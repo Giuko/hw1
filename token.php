@@ -29,6 +29,7 @@
         "User-Agent: My University website"
     );
     $curl = curl_init();
+    #Ne chiamo 100 perché mi serve trovare solo quelli che hanno thumbnail
     curl_setopt($curl, CURLOPT_URL, 'https://oauth.reddit.com/best.json?limit=100');
     curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
