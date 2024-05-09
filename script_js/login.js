@@ -34,53 +34,62 @@ function contieneSimbolo(word) {
     }
     return false;
 }
-let j;
-function validazione(e){
+let j='test';
+async function validazione(e){
+    e.preventDefault();
     const username = form.username.value;
     const password = form.password.value;
     const action = e.submitter.value;
 
     const errorParagraph = document.querySelector('#errore_credenziali');
-
+    
     if(username.length == 0 || password.length == 0){
         errorParagraph.textContent = ("Compilare tutti i campi");
         errorParagraph.classList.add('errore');
         errorParagraph.classList.remove('hidden');
-        e.preventDefault();
+    }else if(password.length <= 7){
+        errorParagraph.textContent = ("Password troppo corta");
+        errorParagraph.classList.add('errore');
+        errorParagraph.classList.remove('hidden');
+    }else if(!contieneMaiuscola(password)){
+        errorParagraph.textContent = ("Password deve contenere almeno una maiuscola");
+        errorParagraph.classList.add('errore');
+        errorParagraph.classList.remove('hidden');
+    }else if(!contieneNumero(password)){
+        errorParagraph.textContent = ("Password deve contenere almeno un numero");
+        errorParagraph.classList.add('errore');
+        errorParagraph.classList.remove('hidden');
+    }else if(!contieneSimbolo(password)){
+        errorParagraph.textContent = ("Password deve contenere almeno un simbolo");
+        errorParagraph.classList.add('errore');
+        errorParagraph.classList.remove('hidden');
     }else if(action === "Sign Up"){
         if(usernameJson.includes(username)){
             errorParagraph.textContent = ("Nome Utente già in uso");
             errorParagraph.classList.add('errore');
             errorParagraph.classList.remove('hidden');
-            e.preventDefault();
-        }else if(password.length <= 7){
-            errorParagraph.textContent = ("Password troppo corta");
-            errorParagraph.classList.add('errore');
-            errorParagraph.classList.remove('hidden');
-            e.preventDefault();
-        }else if(!contieneMaiuscola(password)){
-            errorParagraph.textContent = ("Password deve contenere almeno una maiuscola");
-            errorParagraph.classList.add('errore');
-            errorParagraph.classList.remove('hidden');
-            e.preventDefault();
-        }else if(!contieneNumero(password)){
-            errorParagraph.textContent = ("Password deve contenere almeno un numero");
-            errorParagraph.classList.add('errore');
-            errorParagraph.classList.remove('hidden');
-            e.preventDefault();
-        }else if(!contieneSimbolo(password)){
-            errorParagraph.textContent = ("Password deve contenere almeno un simbolo");
-            errorParagraph.classList.add('errore');
-            errorParagraph.classList.remove('hidden');
-            e.preventDefault();
+        }else{
+            // Solo adesso, se passati i controlli preliminari, sarà inviato il submit.
+            e.target.submit();
         }
-        
-    }else{
-        let cond = (!usernameJson.includes(username)) || (password.length <= 7) || (!contieneMaiuscola(password)) || (!contieneNumero(password)) || (!contieneSimbolo(password));
-        if(cond){
+    }else if(action === "Log In"){
+        if(!usernameJson.includes(username)){
+            errorParagraph.textContent = ("Nome Utente non esistente");
             errorParagraph.classList.add('errore');
             errorParagraph.classList.remove('hidden');
-            e.preventDefault();
+        }else{
+            const request = `?username=${username}&password=${password}`;
+            const url = 'script_php/checkCredentials.php' + request;
+            
+            const response = await fetch(url);
+            const json = await response.json();   
+            if(json === 0){
+                errorParagraph.textContent = ("Password errata");
+                errorParagraph.classList.add('errore');
+                errorParagraph.classList.remove('hidden');
+            }else{
+                e.target.submit();
+            }
         }
     }
 }
@@ -108,7 +117,7 @@ function closeLoginFunction(){
 function logoutClick(){
     console.log("Logout");
     fetch('script_php/logout.php').then(()=>{
-        window.open('script_php/hw1.php', '_self');
+        window.open('hw1.php', '_self');
     });
 }
 

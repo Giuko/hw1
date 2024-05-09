@@ -18,29 +18,28 @@
             $cond_length = (strlen($password) >= 8);
 
             $cond = $cond_number & $cond_symbol & $cond_capital & $cond_length;
-            if($cond == 0){
-                exit;
-            }
-            
-            switch ($azione) {
-                case 'Sign Up':
-                    $query = "INSERT INTO `test` VALUES ('$username','$password')";
-                    mysqli_query($conn, $query);
-                    $_SESSION['username'] = $username;
-                    break;
+            if($cond == 1){
 
-                case 'Log In':
-                    $query = "SELECT * FROM `test` WHERE Username = '$username' AND Password = '$password'";
-                    $res = mysqli_query($conn, $query);
-                    $num = mysqli_num_rows($res);
-                    if($num == 0){
-                        $notFound = 1;
-                    }else{
+                switch ($azione) {
+                    case 'Sign Up':
+                        $query = "INSERT INTO `test` VALUES ('$username','$password')";
+                        mysqli_query($conn, $query);
                         $_SESSION['username'] = $username;
-                    }
-                    break;
-                default:
-                    break;
+                        break;
+
+                    case 'Log In':
+                        $query = "SELECT * FROM `test` WHERE Username = '$username' AND Password = '$password'";
+                        $res = mysqli_query($conn, $query);
+                        $num = mysqli_num_rows($res);
+                        if($num == 0){
+                            $notFound = 1;
+                        }else{
+                            $_SESSION['username'] = $username;
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
