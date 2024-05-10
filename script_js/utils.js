@@ -70,7 +70,6 @@ function leaveStar(e){
         star.textContent = '☆'
     }
 }
-let ret;
 
 function clickStar(e){
     let star = e.target;

@@ -34,7 +34,27 @@ function contieneSimbolo(word) {
     }
     return false;
 }
-let j='test';
+let ret;
+async function loginPHP(user, pass, action){
+    const response = await fetch(`script_php/login.php?username=${user}&password=${pass}&azione=${action}`);
+}
+
+function switchButton(value){
+    if(value === 0){
+        // From login to logout
+        login.classList.remove('flex');
+        login.classList.add('hidden');
+        logout.classList.remove('hidden');
+        logout.classList.add('flex');
+    }else{
+        // From logout to login
+        login.classList.add('flex');
+        login.classList.remove('hidden');
+        logout.classList.add('hidden');
+        logout.classList.remove('flex');
+    }
+}
+
 async function validazione(e){
     e.preventDefault();
     const username = form.username.value;
@@ -69,8 +89,10 @@ async function validazione(e){
             errorParagraph.classList.add('errore');
             errorParagraph.classList.remove('hidden');
         }else{
-            // Solo adesso, se passati i controlli preliminari, sarà inviato il submit.
-            e.target.submit();
+            // e.target.submit();
+            await loginPHP(username, password, 'Sign Up');
+            switchButton(0);
+
         }
     }else if(action === "Log In"){
         if(!usernameJson.includes(username)){
@@ -88,7 +110,13 @@ async function validazione(e){
                 errorParagraph.classList.add('errore');
                 errorParagraph.classList.remove('hidden');
             }else{
-                e.target.submit();
+                await loginPHP(username, password, 'Log In');
+                switchButton(0);
+                document.querySelector('#modal-view').classList.add('hidden');
+                document.querySelector('#modal-view').classList.remove('flex');
+                if(login.dataset.action === 'login'){
+                    window.open("saved.php", "_self");
+                }
             }
         }
     }
@@ -114,11 +142,13 @@ function closeLoginFunction(){
     body.classList.remove('no-scroll');
 }
 
-function logoutClick(){
+async function logoutClick(){
     console.log("Logout");
-    fetch('script_php/logout.php').then(()=>{
-        window.open('hw1.php', '_self');
-    });
+    switchButton(1);
+    await fetch('script_php/logout.php');
+    if(logout.dataset.action === 'logout'){
+        window.open("hw1.php", "_self");
+    }
 }
 
 const login = document.querySelector('#login');

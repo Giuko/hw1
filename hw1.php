@@ -1,48 +1,5 @@
 <?php
     session_start();
-    if(!isset($_SESSION['username'])){
-        $conn = mysqli_connect('localhost', 'root', '','test') or die("Connect failed: " . mysqli_connect_error()); 
-    
-        if(isset($_POST['username']) && isset($_POST['password'])){
-            $azione = $_POST['azione'];
-            $username = mysqli_real_escape_string($conn, $_POST['username']);
-            $password = mysqli_real_escape_string($conn, $_POST['password']);
-
-            //preg_match per fare una ricerca di una espressione regolare
-            // '/' indica inizio e fine dell'espressione regolare
-            $cond_number = preg_match('/\d/', $password);       // '\d' indica carattere numerico
-            // \w indica un qualsiasi carattere alfanumerico, \s indica uno spazio bianco
-            // Con ^ davanti all'espressioni indichiamo qualsiasi carattere che non fa parte ovvero i simboli
-            $cond_symbol = preg_match('/[^\w\s]/', $password);  
-            $cond_capital = preg_match('/[A-Z]/', $password);   // '[A-Z]' corrisponde ad una qualsiasi maiuscola
-            $cond_length = (strlen($password) >= 8);
-
-            $cond = $cond_number & $cond_symbol & $cond_capital & $cond_length;
-            if($cond == 1){
-
-                switch ($azione) {
-                    case 'Sign Up':
-                        $query = "INSERT INTO `test` VALUES ('$username','$password')";
-                        mysqli_query($conn, $query);
-                        $_SESSION['username'] = $username;
-                        break;
-
-                    case 'Log In':
-                        $query = "SELECT * FROM `test` WHERE Username = '$username' AND Password = '$password'";
-                        $res = mysqli_query($conn, $query);
-                        $num = mysqli_num_rows($res);
-                        if($num == 0){
-                            $notFound = 1;
-                        }else{
-                            $_SESSION['username'] = $username;
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -63,25 +20,14 @@
 </head>
 <body>
     <!-- <form action="" method="post" name="login"> -->
-        <?php
-            if(isset($notFound)){
-                echo "<section id='modal-view' class='flex'>";
-            }else{
-                echo "<section id='modal-view' class='hidden'>";
-            }
-        ?>
+        <section id='modal-view' class='hidden'>
             <div id="loginForm" class="flex flex-column align-center">
                 <div class="login_top flex flex-end align-center"> <button id="closeLogin">X</button> </div>
-
             <form action="" method="post" name="login">
                 <div class="login_main">
                     <h1>Log In</h1>
                     <p>By continuing, you agree to our User Agreement and acknowledge that you understand the Privacy Policy.</p>
-                    <?php
-                        if(isset($notFound)){
-                            echo "<p class='errore' id='errore_credenziali'>La password non corrisponde</p>";
-                        }
-                    ?>
+                    
                     <p class='hidden' id='errore_credenziali'></p>
                     <div>
                         <div class="loginInput">
@@ -124,7 +70,13 @@
                     echo '<div class="flex flex-center" id="logout">';
                     echo '<div class="item">Log out</div>';
                     echo '</div>';
+                    echo '<div class="hidden flex-center" id="login">';
+                    echo '<div  class="item">Log In</div>';
+                    echo '</div>';
                 }else{
+                    echo '<div class="hidden flex-center" id="logout">';
+                    echo '<div class="item">Log out</div>';
+                    echo '</div>';
                     echo '<div class="flex flex-center" id="login">';
                     echo '<div  class="item">Log In</div>';
                     echo '</div>';

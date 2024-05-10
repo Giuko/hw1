@@ -13,21 +13,21 @@ Ho usato come API REST senza OAuth per quanto riguarda la ricerca di profili e c
     Pagina informazioni su subreddit    -> about.php
 <!-- #endregion -->
 
+<!-- #region ==== RICHIESTE ASINCRONE ==== -->
+    Tutte le richieste che necessitano l'intervento del server sono asincrone.
+    L'unico ricaricamento è in saved.php:
+                                --> nel logout si verrà reinderizzati in hw1.php
+                                --> nel login la pagina verrà ricaricata per caricare i post salvati.
+<!-- #endregion -->
 
 <!-- #region ==== CONTENUTI DA REVISIONARE==== -->
 
-<!-- #region ==== RICHIESTE ASINCRONE ==== -->
-    L'unica richiesta non asincrona, che richiede il ricaricamento della pagina è l'accesso ad un account sia questo fatto tramite Registrazione che Login.
-<!-- #endregion -->
+    <!-- #region ==== DATABASE ==== -->
+        Si potrebbe fare che quando si salva un post, questo venga caricata sul database nella tabella POST, e poi creata la relazione nella tabella UTENTE_POST
+    <!-- #endregion -->
 
-<!-- #region ==== DATABASE ==== -->
-    Si potrebbe fare che quando si salva un post, questo venga caricata sul database nella tabella POST, e poi creata la relazione nella tabella UTENTE_POST
-<!-- #endregion -->
-
-<!-- #region ==== CARICAMENTO POST ==== -->
-    Quando carico, il feeed, limitato a 25 post, è lento
-<!-- #endregion -->
-
-
+    <!-- #region ==== CARICAMENTO POST ==== -->
+        Quando carico, il feeed, limitato a 25 post, è lento
+    <!-- #endregion -->
 
 <!-- #endregion -->
