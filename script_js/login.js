@@ -92,6 +92,8 @@ async function validazione(e){
             // e.target.submit();
             await loginPHP(username, password, 'Sign Up');
             switchButton(0);
+            document.querySelector('#modal-view').classList.add('hidden');
+            document.querySelector('#modal-view').classList.remove('flex');
 
         }
     }else if(action === "Log In"){
@@ -114,7 +116,7 @@ async function validazione(e){
                 switchButton(0);
                 document.querySelector('#modal-view').classList.add('hidden');
                 document.querySelector('#modal-view').classList.remove('flex');
-                if(login.dataset.action === 'login'){
+                if(login.dataset.action === 'saved-logiin'){
                     window.open("saved.php", "_self");
                 }
             }
@@ -146,7 +148,7 @@ async function logoutClick(){
     console.log("Logout");
     switchButton(1);
     await fetch('script_php/logout.php');
-    if(logout.dataset.action === 'logout'){
+    if(logout.dataset.action === 'saved-logout'){
         window.open("hw1.php", "_self");
     }
 }

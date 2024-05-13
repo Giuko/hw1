@@ -76,19 +76,19 @@
                     
             <?php
                 if(isset($_SESSION['username'])){
-                    echo '<div class="flex flex-center" id="logout" data-action="logout">';
+                    echo '<div class="flex flex-center" id="logout" data-action="saved-logout">';
                     echo    '<div class="item">Log out</div>';
                     echo '</div>';
 
-                    echo '<div class="hidden flex-center" id="login" data-action="login"> ';
+                    echo '<div class="hidden flex-center" id="login" data-action="saved-login"> ';
                     echo    '<div class="item">Log In</div>';
                     echo '</div>';
                 }else{
-                    echo '<div class="hidden flex-center" id="logout" data-action="logout">';
+                    echo '<div class="hidden flex-center" id="logout" data-action="saved-logout">';
                     echo    '<div class="item">Log out</div>';
                     echo '</div>';
 
-                    echo '<div class="flex flex-center" id="login" data-action="login">';
+                    echo '<div class="flex flex-center" id="login" data-action="saved-login">';
                     echo    '<div class="item">Log In</div>';
                     echo '</div>';
                 }

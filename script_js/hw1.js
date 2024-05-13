@@ -27,6 +27,7 @@ class Subreddit{
     }
 }
 
+// Funzione che gestisce i click nell'header
 
 function onClick(){
     let button_previous = document.querySelector('#previous-head');
@@ -81,6 +82,7 @@ function loadMoreContent(){
     }
 }
 
+//Funzione che gestisce il blocco laterale con i subreddit
 function onCLickMore(event){
     let t = event.currentTarget;
     e=t;
