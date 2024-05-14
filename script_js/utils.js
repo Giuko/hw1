@@ -112,12 +112,17 @@ function clickStar(e){
                 post['img'] = article.querySelector('.insert .divImg img').src;
             }
             saved.push(post);
+            const formData = new FormData();
+            formData.append('id', post['id']);
+            formData.append('title', post['title']);
+            formData.append('icon', post['icon']);
+            formData.append('name', post['name']);
+            formData.append('descr', post['descr']);
+            formData.append('img', post['img']);
+
             fetch('script_php/savepost.php',{
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(post)
+                body: formData
             });
         }
     }else{

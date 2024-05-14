@@ -161,7 +161,8 @@ more.addEventListener("click", onCLickMore)
 
 function onEnterSearch(e){
     if(e.key === "Enter"){
-        let value = searchbar.value;
+        let value = encodeURIComponent(searchbar.value);
+        console.log(value);
         loadPosts(value).then((value) => {
             post_array = value;
             console.log('Post loaded');

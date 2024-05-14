@@ -36,14 +36,24 @@ body{
     background-color: #0F1A1C;
 }
 
-.login_top{
+#signupForm{
+    width: 528px;
+    height: 700px;
+    color: rgb(242, 242, 242);
+    font-size: 14px;
+    line-height: 21px;
+    border-radius: 2%;
+    background-color: #0F1A1C;
+}
+
+.login_top, .signup_top{
     padding-left: 24px;
     padding-right: 24px;
     width: 480px;
     height: 64px;
 }
 
-.login_top button{
+.login_top button, .signup_top button{
     width: 32px;
     height: 32px;
     color: rgb(255, 255, 255);
@@ -57,12 +67,12 @@ body{
     
 }
 
-.login_top button:hover{
+.login_top button:hover, .signup_top button:hover{
     background-color: #223237;
     
 }
 
-.login_top button:active{
+.login_top button:active, .signup_top button:active{
     background-color: #33464C;
     
 }
@@ -73,7 +83,13 @@ body{
     height: 504px;    
 }
 
-.login_main .loginInput{
+.signup_main{
+    flex-grow: 1;
+    width: 368px;
+    height: 704px;    
+}
+
+.login_main .loginInput, .signup_main .signupInput{
     background-color: #1a282d;
     border-radius: 15px;
     padding-left: 10px;
@@ -81,40 +97,41 @@ body{
     padding-bottom: 5px;
 }
 
-.login_main .loginInput:hover{
+.login_main .loginInput:hover, .signup_main .signupInput:hover{
     background-color: #223237;
 }
 
-.login_main .loginInput p{
+.login_main .loginInput p, .signup_main .signupInput p{
     color: rgb(130, 149, 155);
 }
 
-.login_main .loginInput input{
+.login_main .loginInput input, .signup_main .signupInput input{
     border-style: none;
     background-color: inherit;
     width: 100%;
     color: rgb(255, 255, 255);
 }
 
-.login_main .loginInput input:focus{
+.login_main .loginInput input:focus, .signup_main .signupInput:focuse{
     outline: none;
 }
 
-.login_main a{
+.login_main a, .signup_main a{
     color: #1870F4;
 }
 
-.login_main a:hover{
+.login_main a:hover, .signup_main a:hover{
     color: #a0c4f5;
 }
 .signup{
     padding: 10px;
 }
-.signup input{
+.signup button{
     margin-left: 10px;
     border-style: none;
     border-radius: 25px;
     color: white;
+    border-style: none;
     background-color: #D93A00;
     cursor: pointer;
     padding: 5px;
@@ -125,13 +142,13 @@ body{
     font-weight: bold;
 }
 
-.login_bottom{
+.login_bottom, .signup_bottom{
     width: 100%;
     height: 96px;
     margin-top: -200px;
 }
 
-.login_bottom input{
+.login_bottom input, .signup_bottom input{
     width: 368px;
     height: 48px;
     color: rgb(255, 255, 255);

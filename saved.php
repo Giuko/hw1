@@ -22,20 +22,16 @@
 
 </head>
 <body>
-    <!-- <form action="" method="post" name="login"> -->
-        <section id='modal-view' class='hidden'>
+    <!-- #region ==== FORM ==== -->
+    <section id='modal-view' class='hidden'>
+        <div id='loginDiv'>
             <div id="loginForm" class="flex flex-column align-center">
                 <div class="login_top flex flex-end align-center"> <button id="closeLogin">X</button> </div>
-
             <form action="" method="post" name="login">
                 <div class="login_main">
                     <h1>Log In</h1>
                     <p>By continuing, you agree to our User Agreement and acknowledge that you understand the Privacy Policy.</p>
-                    <?php
-                        if(isset($notFound)){
-                            echo "<p class='errore' id='errore_credenziali'>La password non corrisponde</p>";
-                        }
-                    ?>
+                    
                     <p class='hidden' id='errore_credenziali'></p>
                     <div>
                         <div class="loginInput">
@@ -48,14 +44,51 @@
                         </div>
                     </div>
                     <div class="signup flex align-center">
-                        New? <input type="submit" name="azione" value="Sign Up">
+                        New? <button id="signup">Sign Up</button>
                     </div>
                 </div>
                 <div class="login_bottom flex flex-center align-center"> <input type="submit" name="azione" value="Log In"></div>
             </form>
             </div>
-        </section>
-    <!-- </form> -->
+        </div>
+        <div id='signupDiv' class='hidden'>
+            <div id="signupForm" class="flex flex-column align-center">
+                <div class="signup_top flex flex-end align-center"> <button id="closeSignup">X</button> </div>
+            <form action="" method="post" name="signup">
+                <div class="signup_main">
+                    <h1>Sign Up</h1>
+                    <p>By continuing, you agree to our User Agreement and acknowledge that you understand the Privacy Policy.</p>
+                    
+                    <p class='hidden' id='errore_credenziali'></p>
+                    <div>
+                        <div class="signupInput">
+                            <p>Username</p>
+                            <input type="text" name="username">
+                        </div>
+                        <div class="signupInput">
+                            <p>Email</p>
+                            <input type="text" name="email">
+                        </div>
+                        <div class="signupInput">
+                            <p>Name</p>
+                            <input type="text" name="name">
+                        </div>
+                        <div class="signupInput">
+                            <p>Surname</p>
+                            <input type="text" name="surname">
+                        </div>
+                        <div class="signupInput">
+                            <p>Password</p>
+                            <input type="password" name="password">
+                        </div>
+                    </div>
+                </div>
+                <div class="login_bottom flex flex-center align-center"> <input type="submit" value="Sign Up"></div>
+            </form>
+            </div>
+        </div>
+    </section>
+    <!-- #endregion-->
     <header class="flex flex-start">
         <div class = "flex" id="logo">
             <div id = "navbar-menu" data-click="0"></div>

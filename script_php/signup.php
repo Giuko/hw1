@@ -2,9 +2,14 @@
     session_start();
     if(!isset($_SESSION['username'])){
         $conn = mysqli_connect('localhost', 'root', '','test') or die("Connect failed: " . mysqli_connect_error()); 
-        if(isset($_POST['username']) && isset($_POST['password'])){
+    
+        if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['email'])){
             $username = mysqli_real_escape_string($conn, $_POST['username']);
+            $name = mysqli_real_escape_string($conn, $_POST['name']);
+            $surname = mysqli_real_escape_string($conn, $_POST['surname']);
+            $email = mysqli_real_escape_string($conn, $_POST['email']);
             $password = mysqli_real_escape_string($conn, $_POST['password']);
+
 
             //preg_match per fare una ricerca di una espressione regolare
             // '/' indica inizio e fine dell'espressione regolare
@@ -17,40 +22,14 @@
 
             $cond = $cond_number & $cond_symbol & $cond_capital & $cond_length;
             if($cond == 1){
-                $query = "SELECT password FROM accounts WHERE username = '$username'";
-                $res = mysqli_query($conn, $query);
 
-                if(!$res){
-                    echo "Query failed: " . mysqli_error($conn); 
-                }else{
-                    $row = mysqli_fetch_assoc($res);
-                    if($row){
-                        $password_from_database = $row['password'];
-                        if(password_verify($password, $password_from_database)){
-                            $_SESSION['username'] = $username;
-                            echo '1';
-                        }
-                    }
-                    
-                }
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                $query = "INSERT INTO `accounts` VALUES ('$username', '$email', '$name', '$surname', '$hashed_password')";
+                mysqli_query($conn, $query);
+                $_SESSION['username'] = $username;
             }
         }
+    
         mysqli_close($conn);
     }
-
-    /*
-    let formData;
-    let url;
-    
-    formData = new FormData();
-    formData.append('username', 'Giuko2');
-    formData.append('password', 'pass123$A')
-    url = 'login.php';
-    fetch(url, {
-        method: 'POST',
-        body: formData
-    }).then((response) => {
-        console.log(response.text());
-    })
-    */
 ?>

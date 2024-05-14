@@ -35,8 +35,17 @@ function contieneSimbolo(word) {
     return false;
 }
 let ret;
-async function loginPHP(user, pass, action){
-    const response = await fetch(`script_php/login.php?username=${user}&password=${pass}&azione=${action}`);
+async function loginPHP(username, password){
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('password', password);
+
+    const url = 'script_php/login.php';
+    
+    const response = await fetch(url,{
+        method: 'POST',
+        body: formData
+    });
 }
 
 function switchButton(value){
@@ -55,15 +64,66 @@ function switchButton(value){
     }
 }
 
-async function validazione(e){
+async function validazioneLogin(e){
     e.preventDefault();
-    const username = form.username.value;
-    const password = form.password.value;
-    const action = e.submitter.value;
+    const form = e.target;
 
-    const errorParagraph = document.querySelector('#errore_credenziali');
+    const username = (form.username.value);
+    const password = (form.password.value);
+    form.password.value='';
+    
+
+    const errorParagraph = document.querySelector('#loginDiv #errore_credenziali');
     
     if(username.length == 0 || password.length == 0){
+        errorParagraph.textContent = ("Compilare tutti i campi");
+        errorParagraph.classList.add('errore');
+        errorParagraph.classList.remove('hidden');
+    }else{
+        if(!usernameJson.includes(username)){
+            errorParagraph.textContent = ("Nome Utente non esistente");
+            form.username.value='';
+            errorParagraph.classList.add('errore');
+            errorParagraph.classList.remove('hidden');
+        }else{
+            const request = `?username=${username}&password=${password}`;
+            const url = 'script_php/checkCredentials.php' + request;
+            
+            const response = await fetch(url);
+            const json = await response.json();
+            if(json === 0){
+                errorParagraph.textContent = ("Password errata");
+                errorParagraph.classList.add('errore');
+                errorParagraph.classList.remove('hidden');
+            }else{
+                await loginPHP(username, password);
+                switchButton(0);
+                document.querySelector('#modal-view').classList.add('hidden');
+                document.querySelector('#modal-view').classList.remove('flex');
+                console.log(login.dataset.action);
+                if(login.dataset.action === 'saved-login'){
+                    console.log(login.dataset.action);
+                    window.open("saved.php", "_self");
+                }
+            }
+        }
+    }
+}
+
+async function validazioneSignup(e){
+    e.preventDefault();
+    const form = e.target;
+
+    const username = (form.username.value);
+    const email = (form.email.value);
+    const name = (form.name.value);
+    const surname = (form.surname.value);
+    const password = (form.password.value);
+    form.password.value = '';
+    const errorParagraph = document.querySelector('#signupDiv #errore_credenziali');
+    
+
+    if(username.length == 0 || email.length == 0 || name.length == 0 || surname.length == 0 || password.length == 0){
         errorParagraph.textContent = ("Compilare tutti i campi");
         errorParagraph.classList.add('errore');
         errorParagraph.classList.remove('hidden');
@@ -83,49 +143,64 @@ async function validazione(e){
         errorParagraph.textContent = ("Password deve contenere almeno un simbolo");
         errorParagraph.classList.add('errore');
         errorParagraph.classList.remove('hidden');
-    }else if(action === "Sign Up"){
+    }else{
         if(usernameJson.includes(username)){
-            errorParagraph.textContent = ("Nome Utente già in uso");
+            form.username.value='';
+            errorParagraph.textContent = ("Nome Utente esistente");
             errorParagraph.classList.add('errore');
             errorParagraph.classList.remove('hidden');
         }else{
-            // e.target.submit();
-            await loginPHP(username, password, 'Sign Up');
+            const formData = new FormData();
+            formData.append('username', username);
+            formData.append('password', password);
+            formData.append('name', name);
+            formData.append('surname', surname);
+            formData.append('email', email);
+
+            const url = 'script_php/signup.php';
+            
+            const response = await fetch(url,{
+                method: 'POST',
+                body: formData
+            });
+            console.log(response.text());
             switchButton(0);
             document.querySelector('#modal-view').classList.add('hidden');
             document.querySelector('#modal-view').classList.remove('flex');
-
-        }
-    }else if(action === "Log In"){
-        if(!usernameJson.includes(username)){
-            errorParagraph.textContent = ("Nome Utente non esistente");
-            errorParagraph.classList.add('errore');
-            errorParagraph.classList.remove('hidden');
-        }else{
-            const request = `?username=${username}&password=${password}`;
-            const url = 'script_php/checkCredentials.php' + request;
-            
-            const response = await fetch(url);
-            const json = await response.json();   
-            if(json === 0){
-                errorParagraph.textContent = ("Password errata");
-                errorParagraph.classList.add('errore');
-                errorParagraph.classList.remove('hidden');
-            }else{
-                await loginPHP(username, password, 'Log In');
-                switchButton(0);
-                document.querySelector('#modal-view').classList.add('hidden');
-                document.querySelector('#modal-view').classList.remove('flex');
-                if(login.dataset.action === 'saved-logiin'){
-                    window.open("saved.php", "_self");
-                }
+            if(login.dataset.action === 'saved-login'){
+                // window.open("saved.php", "_self");
+                document.querySelector('.errore').classList.add('hidden');
+                fetch("script_php/loadSaved.php").then((response) => {
+                    return response.json();
+                }).then((json) => {
+                    saved = json;
+                    for(let i = 0; i < saved.length; i++){
+                        createArticle(i);
+                    }
+                });
             }
         }
     }
 }
 
-const form = document.forms['login'];
-form.addEventListener('submit', validazione);
+function signUp(e){
+    //Altrimenti viene effettuato il submit del loginForm
+    e.preventDefault();
+    const loginWindow = document.querySelector('#loginDiv');
+    const signupWindow = document.querySelector('#signupDiv');
+    signupWindow.classList.remove('hidden');
+    loginWindow.classList.add('hidden');
+    
+}
+
+const loginForm = document.forms['login'];
+loginForm.addEventListener('submit', validazioneLogin);
+
+const signupForm = document.forms['signup'];
+signupForm.addEventListener('submit', validazioneSignup);
+
+const signupButton = document.querySelector('#signup');
+signupButton.addEventListener('click', signUp);
 
 function loginClick(){
     const modal = document.querySelector('#modal-view');
@@ -136,8 +211,17 @@ function loginClick(){
     body.classList.add('no-scroll');
 }
 
-function closeLoginFunction(){
+function closeLoginSignupFunction(){
+    console.log('close')
     const modal = document.querySelector('#modal-view');
+    const loginWindow = document.querySelector('#loginDiv');
+    const signupWindow = document.querySelector('#signupDiv');
+
+    
+
+    signupWindow.classList.add('hidden');
+    loginWindow.classList.remove('hidden');
+
     modal.classList.remove('flex');
     modal.classList.add('hidden');
     const body = document.querySelector('body');
@@ -155,12 +239,11 @@ async function logoutClick(){
 
 const login = document.querySelector('#login');
 const logout = document.querySelector('#logout');
-const closeLogin = document.querySelector('#closeLogin');
+const closeLoginButton = document.querySelector('#closeLogin');
+const closeSignupButton = document.querySelector('#closeSignup');
 
-if(login != null){
-    login.addEventListener('click', loginClick);
-    closeLogin.addEventListener('click', closeLoginFunction);
-}
-if(logout != null){
-    logout.addEventListener('click', logoutClick);
-}
+closeLoginButton.addEventListener('click', closeLoginSignupFunction);
+closeSignupButton.addEventListener('click', closeLoginSignupFunction);
+
+login.addEventListener('click', loginClick);
+logout.addEventListener('click', logoutClick);

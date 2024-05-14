@@ -1,12 +1,26 @@
 <?php
     $conn = mysqli_connect('localhost', 'root', '','test') or die("Connect failed: " . mysqli_connect_error()); 
 
-    $username = $_GET['username'];
-    $password = $_GET['password'];
+    $username = mysqli_real_escape_string($conn, $_GET['username']);
+    $password = mysqli_real_escape_string($conn, $_GET['password']);
 
-    $query = "SELECT * FROM `test` WHERE Username = '$username' AND Password = '$password'";
+    // $query = "SELECT password FROM `accounts` WHERE username = '". $username ."'";
+    $query = "SELECT password FROM `accounts` WHERE username = 'Giuko2'";
 
     $res = mysqli_query($conn, $query);
-    $num = mysqli_num_rows($res);
-    echo "$num";
+    
+    if($res){
+        $row = mysqli_fetch_assoc($res);
+        if($row){
+            $password_from_database = $row['password'];
+            
+            if(password_verify($password, $password_from_database)){
+                echo '1';
+            }else{
+                echo '0';
+            }
+        }
+    }
+    
+    mysqli_close($conn);
 ?>
