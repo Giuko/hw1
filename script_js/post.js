@@ -11,7 +11,7 @@ class Post{
         }
     }
 }
-let k;
+
 async function loadPosts(value){
     console.log("Loading topic: " + value);
     const posts = [];
@@ -20,8 +20,7 @@ async function loadPosts(value){
     const url = 'script_php/fetchNoOauth.php?request=' + query;
     
     json = await fetch(url).then(onResponse, onFailure);
-    
-    console.log('Json loaded');
+    console.log('loadPost: '+ JSON.stringify(json));
     const data = json.data;
     const num = data.dist;
     for(let i = 0; i < num; i++){

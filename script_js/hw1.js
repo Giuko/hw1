@@ -162,7 +162,6 @@ more.addEventListener("click", onCLickMore)
 function onEnterSearch(e){
     if(e.key === "Enter"){
         let value = encodeURIComponent(searchbar.value);
-        console.log(value);
         loadPosts(value).then((value) => {
             post_array = value;
             console.log('Post loaded');
@@ -294,11 +293,12 @@ function recentLoad(){
 }
 
 /* #region ==== HEAD ==== */
-function getIcon(subreddit){
+async function getIcon(subreddit){
     
     let request = `/r/${subreddit}/about.json`;
     let url = 'script_php/fetchNoOauth.php?request='+request; 
-    const icon = fetch(url).then(onResponse, onFailure).then((json) => {
+    const icon = await fetch(url).then(onResponse, onFailure).then((json) => {
+        console.log('getIcon: ' + JSON.stringify(json));
         let ico = getImg(json.data.icon_img);
         if(ico === ""){
             ico = getImg(json.data.community_icon);
@@ -341,8 +341,8 @@ async function onHeadJson(json){
     firstHeadLoad();
 }
 
-function HeadLoading(){
-    fetch("script_php/token.php").then(onResponse, onFailure).then(onHeadJson);
+async function HeadLoading(){
+    await fetch("script_php/token.php").then(onResponse, onFailure).then(onHeadJson);
 }
 /* #endregion */
 
@@ -362,8 +362,9 @@ function onSubredditInfoJson(json){
     
 }
 
-function onBestJson(json){
+async function onBestJson(json){
     let visited = [];
+    console.log('onBest: ' + JSON.stringify(json));
     for(let i = 0; i < json.data.dist; i++){
         let name = json.data.children[i].data.subreddit_name_prefixed;
         if(!visited.includes(name)){
@@ -374,18 +375,16 @@ function onBestJson(json){
     for(let i = 0; i < visited.length; i++){
         const request = `/${visited[i]}/about.json`;
         const url = 'script_php/fetchNoOauth.php?request='+request; 
-        promise.push(fetch(url).then(onResponse, onFailure).then(onSubredditInfoJson));
-        // promise.push(fetch(`https://www.reddit.com/${visited[i]}/about.json`).then(onResponse, onFailure).then(onSubredditInfoJson));
+        await (fetch(url).then(onResponse, onFailure).then(onSubredditInfoJson));
     }         
-    Promise.all(promise).then(() => {
-        firstSidebarLoad();
-    });   
+    firstSidebarLoad();
 }
 
-function loadSubreddit(){    
+async function loadSubreddit(){
     const request = `/best.json`;
     const url = 'script_php/fetchNoOauth.php?request='+request; 
-    fetch(url).then(onResponse, onFailure).then(onBestJson);
+    const json = await fetch(url).then(onResponse, onFailure);
+    await onBestJson(json);
 }
 /* #endregion */
 
@@ -498,7 +497,6 @@ function loadContent(){
 
 HeadLoading();
 loadSubreddit();
-
 loadPosts('new').then((value) => {
     post_array = value;
     console.log('Post loaded');

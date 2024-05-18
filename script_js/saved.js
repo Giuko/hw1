@@ -5,6 +5,7 @@ fetch("script_php/loadSaved.php").then((response) => {
     return response.json();
 }).then((json) => {
     saved = json;
+    console.log(json);
     for(let i = 0; i < saved.length; i++){
         createArticle(i);
     }
@@ -15,11 +16,11 @@ function loadSaved(index){
     let post = saved[index];
     
     let postId = post['id'];
-    let subredditName = post['Name'];
-    let subredditIcon = post['Icon'];
-    let titleText = post['Title'];
-    let descrText = post['Descr']
-    let imagePost = post['Img'];
+    let subredditName = post['name'];
+    let subredditIcon = post['icon'];
+    let titleText = post['title'];
+    let descrText = post['descr']
+    let imagePost = post['img'];
 
     let externDiv = document.createElement('div');
     externDiv.classList.add('insert');
@@ -90,10 +91,12 @@ function loadSaved(index){
     externDiv.appendChild(subred);
     externDiv.appendChild(title);
     externDiv.appendChild(text);
-    if(imagePost !== undefined){
-        imgArticle.src = imagePost;
-        divImg.appendChild(imgArticle);
+    if(imagePost === 'undefined'){
+        imagePost = '';
     }
+    imgArticle.src = imagePost;
+    divImg.appendChild(imgArticle);
+    
     externDiv.appendChild(divImg); 
     const link = document.createElement('a');
     link.href = 'https://www.reddit.com/r/AskDocs/comments/' + postId;

@@ -42,12 +42,20 @@
         }
         $img = mysqli_real_escape_string($conn, $img);
 
-        $query = "INSERT INTO `Saved` VALUES ('$id', '$username', '$title', '$icon', '$name', '$descr', '$img')";
-        $result = mysqli_query($conn, $query);
-
-        if(!$result) {
-            die("Errore nella query: " . mysqli_error($conn));
+        // Controllo se il post è già presente
+        $query = "SELECT * FROM `posts` WHERE id = '$id'";
+        $res = mysqli_query($conn, $query);
+        
+        if($res->num_rows == 0){
+            // Se non è presente memorizzo il post
+            $query = "INSERT INTO `posts` VALUES ('$id', '$title', '$icon', '$name', '$descr', '$img')";
+            $result = mysqli_query($conn, $query);
         }
+        
+        // Aggiungo la relazione N-N
+        $query = "INSERT INTO `Saved` VALUES ('$id', '$username')";
+        $result = mysqli_query($conn, $query);
+        
         mysqli_close($conn);
     }
     exit;

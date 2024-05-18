@@ -3,8 +3,9 @@ Ho usato come API REST senza OAuth per quanto riguarda la ricerca di profili e c
 
 
 <!-- #region ==== Controlli client/server ==== -->
-    Inserimento password    -> client/server
-    Nome utente già in uso  -> client
+    Inserimento password                -> client/server
+    Nome utente già in uso (signup)     -> client
+    Nome utente non esistente (login)   -> client
 <!-- #endregion -->
 
 <!-- #region ==== PAGINE DISPONIBILI ==== -->
@@ -17,7 +18,6 @@ Ho usato come API REST senza OAuth per quanto riguarda la ricerca di profili e c
     Tutte le richieste che necessitano l'intervento del server sono asincrone.
     L'unico ricaricamento è in saved.php:
                                 --> nel logout si verrà reinderizzati in hw1.php
-                                --> nel login la pagina verrà ricaricata per caricare i post salvati.
 <!-- #endregion -->
 
 <!-- #region ==== CONTENUTI DA REVISIONARE==== -->
