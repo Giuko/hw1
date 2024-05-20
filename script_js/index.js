@@ -450,6 +450,7 @@ function loadContent(){
 
         let text = document.createElement('div');
         text.classList.add('text');
+        text.classList.add('truncate');
 
         let divImg = document.createElement('div');
         divImg.classList.add('divImg');

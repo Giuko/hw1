@@ -690,7 +690,6 @@ nav{
 
 #feed .item .insert .text{
     color: rgb(184, 197, 201);
-    display: flex;
     word-wrap: break-word;
     flex-wrap: wrap;
 
@@ -701,6 +700,12 @@ nav{
     padding-right: 16px;
 }
 
+.insert .truncate{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3; /* Limita a 3 linee di testo */
+    overflow: hidden;
+}
 @media (max-width: 1000px) {
     #feed .item .insert{
         width: 100%;

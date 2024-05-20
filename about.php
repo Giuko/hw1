@@ -126,7 +126,7 @@
     <div class="main-container">
         <nav class="flex flex-center">
             <div class="subnav flex flex-start">
-                <a href="hw1.php">    
+                <a href="index.php">    
                     <div class="flex flex-start" id="popular">
                         <div class="image"></div>
                         <div class="item">Popular</div>

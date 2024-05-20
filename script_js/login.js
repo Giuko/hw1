@@ -233,7 +233,7 @@ async function logoutClick(){
     switchButton(1);
     await fetch('script_php/logout.php');
     if(logout.dataset.action === 'saved-logout'){
-        window.open("hw1.php", "_self");
+        window.open("index.php", "_self");
     }
 }
 

@@ -9,6 +9,7 @@
     <title>Reddit</title>
     <link rel="icon" type="image/x-icon" href="style/img/redditFavicon.png">
     <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/saved.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <?php
         if(isset($_SESSION['username'])){
@@ -137,7 +138,7 @@
     <div class="main-container">
         <nav class="flex flex-center">
             <div class="subnav flex flex-start">
-                <a href="hw1.php">    
+                <a href="index.php">    
                     <div class="flex flex-start" id="popular">
                         <div class="image"></div>
                         <div class="item">Popular</div>

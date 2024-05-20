@@ -29,9 +29,9 @@ async function loadPosts(value){
         const id = info.id;
         const title = info.title;
         let content = info.selftext;
-        if(content.length > 403){
-            content = content.substring(0, 400) + "...";
-        }
+        // if(content.length > 403){
+        //     content = content.substring(0, 400) + "...";
+        // }
         let thumb = info.thumbnail;
         thumb = getImg(thumb);
         
