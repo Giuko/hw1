@@ -47,5 +47,4 @@ function getInfo(){
     })
 }
 
-
 getInfo();

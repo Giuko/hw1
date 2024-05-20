@@ -5,7 +5,7 @@
 
     $headers = array(
         "Authorization: Basic ".base64_encode($client_id.":".$client_secret),
-        "User-Agent: My University website"
+        "user-agent: Mozilla/5.0 (Macintosh; PPC Mac OS X 10_8_7 rv:5.0; en-US) AppleWebKit/533.31.5 (KHTML, like Gecko) Version/4.0 Safari/533.31.5"
     );
 
     $username = "GiukoMG";
@@ -26,7 +26,7 @@
     $token = json_decode($result)->access_token;
     $headers = array(
         "Authorization: Bearer ".$token,
-        "User-Agent: My University website"
+        "user-agent: Mozilla/5.0 (Macintosh; PPC Mac OS X 10_8_7 rv:5.0; en-US) AppleWebKit/533.31.5 (KHTML, like Gecko) Version/4.0 Safari/533.31.5"
     );
     $curl = curl_init();
     #Ne chiamo 100 perché mi serve trovare solo quelli che hanno thumbnail

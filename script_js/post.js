@@ -48,6 +48,20 @@ async function loadPosts(value){
             ico = getImg(infoSubreddit.community_icon);
         }
         const post = new Post(id, title, content, thumb, ico, subreddit);
+
+        const formData = new FormData();
+        formData.append('id', id);
+        formData.append('title', title);
+        formData.append('icon', ico);
+        formData.append('name', subreddit); 
+        formData.append('descr', content); 
+        formData.append('img', thumb); 
+
+        await fetch("script_php/inDBPost.php",{
+            method: 'POST',
+            body: formData
+        });
+
         posts.push(post);
 
     }
