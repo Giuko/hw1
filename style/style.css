@@ -126,15 +126,14 @@ body{
 .signup{
     padding: 10px;
 }
-.signup button{
-    margin-left: 10px;
-    border-style: none;
-    border-radius: 25px;
-    color: white;
-    border-style: none;
-    background-color: #D93A00;
+
+.signup a{
+    color: #D93A00;
+    margin-left: 5px;
     cursor: pointer;
-    padding: 5px;
+}
+.signup a:hover{
+    color: #962900;
 }
 
 .errore{

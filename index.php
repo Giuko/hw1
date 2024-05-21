@@ -41,7 +41,7 @@
                             </div>
                         </div>
                         <div class="signup flex align-center">
-                            New? <button id="signup">Sign Up</button>
+                            New? <a id="signup">Sign Up</a>
                         </div>
                     </div>
                     <div class="login_bottom flex flex-center align-center"> <input type="submit" name="azione" value="Log In"></div>
@@ -64,7 +64,7 @@
                             </div>
                             <div class="signupInput">
                                 <p>Email</p>
-                                <input type="text" name="email">
+                                <input type="email" name="email">
                             </div>
                             <div class="signupInput">
                                 <p>Name</p>
