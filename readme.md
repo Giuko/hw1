@@ -9,9 +9,10 @@ Ho usato come API REST senza OAuth per quanto riguarda la ricerca di profili e c
 <!-- #endregion -->
 
 <!-- #region ==== PAGINE DISPONIBILI ==== -->
-    Pagina home                         -> hw1.php
-    Pagina contenuti salvati            -> saved.php
-    Pagina informazioni su subreddit    -> about.php
+    Pagina home                         -> hw1.php      Popolata mediante fetch API di reddit
+    Pagina contenuti salvati            -> saved.php    Popolata mediante db
+    Pagina informazioni su subreddit    -> about.php    Popolata mediante fetch API di reddit
+    Pagina post e commenti              -> comment.php  Popolata mediante db
 <!-- #endregion -->
 
 <!-- #region ==== RICHIESTE ASINCRONE ==== -->
@@ -20,14 +21,6 @@ Ho usato come API REST senza OAuth per quanto riguarda la ricerca di profili e c
                                 --> nel logout si verrà reinderizzati in hw1.php
 <!-- #endregion -->
 
-<!-- #region ==== CONTENUTI DA REVISIONARE==== -->
-
-    <!-- #region ==== DATABASE ==== -->
-        Si potrebbe fare che quando si salva un post, questo venga caricata sul database nella tabella POST, e poi creata la relazione nella tabella UTENTE_POST
-    <!-- #endregion -->
-
-    <!-- #region ==== CARICAMENTO POST ==== -->
-        Quando carico, il feeed, limitato a 25 post, è lento
-    <!-- #endregion -->
-
+<!-- #region ==== TODO==== -->
+    Aggiungere alla pagina comment.php, l'opzione di commentare
 <!-- #endregion -->

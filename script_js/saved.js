@@ -100,7 +100,7 @@ function loadSaved(index){
     
     externDiv.appendChild(divImg); 
     const link = document.createElement('a');
-    link.href = 'https://www.reddit.com/r/AskDocs/comments/' + postId;
+    link.href = 'comment.php?postId=' + postId;
     link.appendChild(externDiv);
     article.dataset.id = postId;
     article.appendChild(link); 

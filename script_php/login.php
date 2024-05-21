@@ -37,20 +37,4 @@
         }
         mysqli_close($conn);
     }
-
-    /*
-    let formData;
-    let url;
-    
-    formData = new FormData();
-    formData.append('username', 'Giuko2');
-    formData.append('password', 'pass123$A')
-    url = 'login.php';
-    fetch(url, {
-        method: 'POST',
-        body: formData
-    }).then((response) => {
-        console.log(response.text());
-    })
-    */
 ?>

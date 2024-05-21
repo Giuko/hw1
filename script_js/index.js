@@ -487,7 +487,7 @@ function loadContent(){
         }
 
         const link = document.createElement('a');
-        link.href = 'https://www.reddit.com/r/AskDocs/comments/' + article.dataset.id;
+        link.href = 'comment.php?postId=' + article.dataset.id;
         link.appendChild(externDiv);
         article.appendChild(link);
         
