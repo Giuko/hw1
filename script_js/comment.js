@@ -1,12 +1,20 @@
 const postId = document.querySelector('#postId').dataset.info;
+let retValue;
+function deleteComment(e){
+    const id = e.target.parentElement.parentElement.parentElement.dataset.id;
+    e.target.parentElement.parentElement.parentElement.remove();
+    fetch("script_php/deleteComment.php?id="+id);
+}
 
-function postComment(main, element){
+async function postComment(main, element){
+    
     const commentDiv = document.createElement('section');
     const topDiv = document.createElement('div');
     const userDiv = document.createElement('div');
     const dataDiv = document.createElement('div');
     const containerDiv = document.createElement('div');
     const contentDiv = document.createElement('div');
+    
 
     contentDiv.classList.add("content");
     containerDiv.classList.add("content-container");
@@ -37,9 +45,32 @@ function postComment(main, element){
     
     contentDiv.textContent = element['content'];
     containerDiv.appendChild(contentDiv);
-    commentDiv.append(containerDiv);
+    commentDiv.appendChild(containerDiv);
 
+    // Solo se utente che ha postato e utente loggato sono uguali
+    //element['username']
+
+    const formData = new FormData();
+    formData.append('username', element['username']);
+    await fetch('script_php/checkUsername.php',  {
+        method: 'POST',
+        body: formData
+    }).then((response)=>{
+        return response.json();
+    }).then((json) => {
+        if(json){
+            const modifyDiv = document.createElement('a');
+            modifyDiv.classList.add("modify");
+            modifyDiv.textContent = "Delete";
+            modifyDiv.addEventListener('click', deleteComment);
+            contentDiv.appendChild(modifyDiv);
+        }
+    });
+    if(element['id'] !== 'undefined'){
+        commentDiv.dataset.id=element['id'];   
+    }
     main.append(commentDiv);
+
 }
 
 function loadComment(){

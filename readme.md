@@ -23,6 +23,5 @@ Ho usato come API REST senza OAuth per quanto riguarda la ricerca di profili e c
 
 <!-- #region ==== TODO==== -->
 <!-- ==== TODO==== -->
-    Aggiungere verifica nome utente già in uso al server
-    Aggiungere alla pagina comment.php, l'opzione di commentare
+    Aggiungere l'opzione di eliminare commento
 <!-- #endregion -->

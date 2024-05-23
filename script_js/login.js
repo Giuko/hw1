@@ -104,6 +104,7 @@ async function validazioneLogin(e){
                     window.open("saved.php", "_self");
                 }else if(login.dataset.action === 'comment-login'){
                     document.querySelector('#commentError').classList.add('hidden');
+                    location.reload();
                 }
             }
         }
@@ -232,6 +233,8 @@ async function logoutClick(){
     await fetch('script_php/logout.php');
     if(logout.dataset.action === 'saved-logout'){
         window.open("index.php", "_self");
+    }else if(logout.dataset.action === 'comment-logout'){
+        location.reload();
     }
 }
 

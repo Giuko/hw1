@@ -116,6 +116,8 @@ img{
     margin-right: 30px;
     color: rgb(242, 242, 242);
     font-size: 14px;
+    display: flex;
+    justify-content: space-between;
 }
 
 #formComment .text{
@@ -151,4 +153,10 @@ img{
 
 #formComment .submit:active{
     background-color: rgb(61, 135, 246);
+}
+
+.modify{
+    text-decoration: underline;
+    cursor: pointer;
+    color: gray;
 }

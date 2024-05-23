@@ -110,7 +110,7 @@
                     echo '<div class="item">Log out</div>';
                     echo '</div>';
                     echo '<div class="hidden flex-center" id="login">';
-                    echo '<div  class="item">Log In</div>';
+                    echo '<div  class="item">Log In</div>'  ;
                     echo '</div>';
                 }else{
                     echo '<div class="hidden flex-center" id="logout">';
