@@ -10,6 +10,13 @@
             $email = mysqli_real_escape_string($conn, $_POST['email']);
             $password = mysqli_real_escape_string($conn, $_POST['password']);
 
+            // Il nome utente già esiste
+            $query = "SELECT password FROM `accounts` WHERE username = '$username'";
+            $res = mysqli_query($conn, $query);
+            if($res->num_rows !== 0){
+                exit;
+            }
+
 
             //preg_match per fare una ricerca di una espressione regolare
             // '/' indica inizio e fine dell'espressione regolare

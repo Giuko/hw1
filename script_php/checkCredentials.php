@@ -5,7 +5,7 @@
     $password = mysqli_real_escape_string($conn, $_GET['password']);
 
     // $query = "SELECT password FROM `accounts` WHERE username = '". $username ."'";
-    $query = "SELECT password FROM `accounts` WHERE username = 'Giuko2'";
+    $query = "SELECT password FROM `accounts` WHERE username = '$username'";
 
     $res = mysqli_query($conn, $query);
     

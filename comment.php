@@ -103,19 +103,19 @@
                     
         <?php
                 if(isset($_SESSION['username'])){
-                    echo '<div class="flex flex-center" id="logout">';
+                    echo '<div class="flex flex-center" id="logout" data-action="comment-logout">';
                     echo    '<div class="item">Log out</div>';
                     echo '</div>';
 
-                    echo '<div class="hidden flex-center" id="login">';
+                    echo '<div class="hidden flex-center" id="login" data-action="comment-login"> ';
                     echo    '<div class="item">Log In</div>';
                     echo '</div>';
                 }else{
-                    echo '<div class="hidden flex-center" id="logout">';
+                    echo '<div class="hidden flex-center" id="logout" data-action="comment-logout">';
                     echo    '<div class="item">Log out</div>';
                     echo '</div>';
 
-                    echo '<div class="flex flex-center" id="login">';
+                    echo '<div class="flex flex-center" id="login" data-action="comment-login">';
                     echo    '<div class="item">Log In</div>';
                     echo '</div>';
                 }
@@ -144,7 +144,18 @@
         <div class="container flex flex-center">
             <div class="subcontainer">    
                 <div class="flex flex-center flex-column" id="main">
-                    <h1 class='errore hidden'>Si è verificato un errore, ricaricare la pagine<br>Se l'errore persiste provare un altro post</hw1>
+                    <h1 class='errore hidden'>Si è verificato un errore, ricaricare la pagine<br>Se l'errore persiste provare un altro post</h1>
+                    <div id="post"></div>
+                    <div id = "button_comment" class="flex flex-start align-center">
+                        <button id="comment" class="flex align-center"><span>+</span>Comment</button>
+                    </div>
+                    <p id = "commentError" class = "errore   hidden">Bisogna essere loggati</p>
+                    <form class = "hidden" action="" method='post' id='formComment' name="formComment">
+                        <div class = "flex flex-column">
+                            <textarea class = 'text' type="text" placeholder="Comment here" name="content"></textarea>
+                            <input class = 'submit' type="submit" value="Comment">
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

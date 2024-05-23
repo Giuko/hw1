@@ -112,7 +112,7 @@ body{
     color: rgb(255, 255, 255);
 }
 
-.login_main .loginInput input:focus, .signup_main .signupInput:focuse{
+.login_main .loginInput input:focus, .signup_main .signupInput:focus{
     outline: none;
 }
 

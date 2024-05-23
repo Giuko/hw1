@@ -4,8 +4,8 @@ Ho usato come API REST senza OAuth per quanto riguarda la ricerca di profili e c
 
 <!-- #region ==== Controlli client/server ==== -->
     Inserimento password                -> client/server
-    Nome utente già in uso (signup)     -> client
-    Nome utente non esistente (login)   -> client
+    Nome utente già in uso (signup)     -> client/server
+    Nome utente non esistente (login)   -> client (nel server la query non trova nulla quindi non c'è bisogno di una verifica ulteriore)
 <!-- #endregion -->
 
 <!-- #region ==== PAGINE DISPONIBILI ==== -->
@@ -22,7 +22,7 @@ Ho usato come API REST senza OAuth per quanto riguarda la ricerca di profili e c
 <!-- #endregion -->
 
 <!-- #region ==== TODO==== -->
-<!-- #region ==== TODO==== -->
+<!-- ==== TODO==== -->
     Aggiungere verifica nome utente già in uso al server
     Aggiungere alla pagina comment.php, l'opzione di commentare
 <!-- #endregion -->

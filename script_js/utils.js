@@ -4,7 +4,7 @@ function checkScroll() {
     const windowHeight = window.innerHeight;
     const bodyHeight = document.body.offsetHeight;
 
-    if(sidebar !== undefined){
+    if(typeof sidebar !== 'undefined'){
         if(sidebar.dataset.position === "1" ){
             sidebar.dataset.position === "0";
             if(scrollTop <  235){
@@ -17,12 +17,11 @@ function checkScroll() {
                 sidebar.classList.add('sticky');
             }
         }
-    }
-
-    // Se l'utente ha raggiunto il fondo della pagina
-    if (scrollTop + windowHeight >= bodyHeight) {
-        loadMoreContent();
-    }
+        // Se l'utente ha raggiunto il fondo della pagina
+        if (scrollTop + windowHeight >= bodyHeight) {
+            loadMoreContent();
+        }
+    }    
 }
 window.addEventListener("scroll", checkScroll);
 

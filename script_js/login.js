@@ -100,10 +100,10 @@ async function validazioneLogin(e){
                 switchButton(0);
                 document.querySelector('#modal-view').classList.add('hidden');
                 document.querySelector('#modal-view').classList.remove('flex');
-                console.log(login.dataset.action);
                 if(login.dataset.action === 'saved-login'){
-                    console.log(login.dataset.action);
                     window.open("saved.php", "_self");
+                }else if(login.dataset.action === 'comment-login'){
+                    document.querySelector('#commentError').classList.add('hidden');
                 }
             }
         }
@@ -163,12 +163,11 @@ async function validazioneSignup(e){
                 method: 'POST',
                 body: formData
             });
-            console.log(response.text());
+            
             switchButton(0);
             document.querySelector('#modal-view').classList.add('hidden');
             document.querySelector('#modal-view').classList.remove('flex');
             if(login.dataset.action === 'saved-login'){
-                // window.open("saved.php", "_self");
                 document.querySelector('.errore').classList.add('hidden');
                 fetch("script_php/loadSaved.php").then((response) => {
                     return response.json();
@@ -212,7 +211,6 @@ function loginClick(){
 }
 
 function closeLoginSignupFunction(){
-    console.log('close')
     const modal = document.querySelector('#modal-view');
     const loginWindow = document.querySelector('#loginDiv');
     const signupWindow = document.querySelector('#signupDiv');

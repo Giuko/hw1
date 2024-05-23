@@ -29,12 +29,14 @@
                         if(password_verify($password, $password_from_database)){
                             $_SESSION['username'] = $username;
                             echo '1';
+                            mysqli_close($conn);
+                            exit;
                         }
                     }
                     
                 }
             }
         }
-        mysqli_close($conn);
     }
+    echo 0;
 ?>
