@@ -3,7 +3,7 @@
         
     if(isset($_GET['id'])){
         $id = $_GET['id'];
-        $conn = mysqli_connect('localhost', 'root', '','test') or die("Connect failed: " . mysqli_connect_error());
+        $conn = mysqli_connect('localhost', 'root', '','homeworkWP') or die("Connect failed: " . mysqli_connect_error());
         $query = "SELECT * FROM `posts` WHERE id = '$id'";
         $res = mysqli_query($conn, $query);
         if($res->num_rows !== 0){

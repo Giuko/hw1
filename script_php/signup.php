@@ -1,7 +1,7 @@
 <?php
     session_start();
     if(!isset($_SESSION['username'])){
-        $conn = mysqli_connect('localhost', 'root', '','test') or die("Connect failed: " . mysqli_connect_error()); 
+        $conn = mysqli_connect('localhost', 'root', '','homeworkWP') or die("Connect failed: " . mysqli_connect_error()); 
     
         if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['email'])){
             $username = mysqli_real_escape_string($conn, $_POST['username']);
@@ -31,7 +31,7 @@
             if($cond == 1){
 
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                $query = "INSERT INTO `accounts` VALUES ('$username', '$email', '$name', '$surname', '$hashed_password')";
+                $query = "INSERT INTO `accounts` (`username`, `name`, `surname`, `email`, `password`) VALUES ('$username', '$email', '$name', '$surname', '$hashed_password')";
                 mysqli_query($conn, $query);
                 $_SESSION['username'] = $username;
             }

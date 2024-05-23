@@ -1,7 +1,7 @@
 <?php
     session_start();
     if(isset($_SESSION['username'])){
-        $conn = mysqli_connect('localhost', 'root', '','test') or die("Connect failed: " . mysqli_connect_error());
+        $conn = mysqli_connect('localhost', 'root', '','homeworkWP') or die("Connect failed: " . mysqli_connect_error());
         
         $username = $_SESSION['username'];
 
@@ -53,7 +53,21 @@
         }
         
         // Aggiungo la relazione N-N
-        $query = "INSERT INTO `Saved` VALUES ('$id', '$username')";
+
+        // Estraggo l'id numerico dal post
+        $query = "SELECT * FROM `posts` WHERE id='$id'";
+        $res = mysqli_query($conn, $query);
+        $row = mysqli_fetch_assoc($res);
+        $post_id = $row['numeric_id'];
+
+        // Estraggo l'id dall'account
+        $query = "SELECT * FROM `accounts` WHERE username='$username'";
+        $res = mysqli_query($conn, $query);
+        $row = mysqli_fetch_assoc($res);
+        $account_id = $row['id'];
+
+
+        $query = "INSERT INTO `saved` (`post_id`, `account_id`) VALUES('$post_id', '$account_id')";
         $result = mysqli_query($conn, $query);
         
         mysqli_close($conn);

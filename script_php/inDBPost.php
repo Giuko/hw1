@@ -1,6 +1,6 @@
 <?php
     #Memorizzo nel database i post
-    $conn = mysqli_connect('localhost', 'root', '','test') or die("Connect failed: " . mysqli_connect_error());
+    $conn = mysqli_connect('localhost', 'root', '','homeworkWP') or die("Connect failed: " . mysqli_connect_error());
 
     $id = $_POST['id'];
 
@@ -45,7 +45,7 @@
     
     if($res->num_rows == 0){
         // Se non è presente memorizzo il post
-        $query = "INSERT INTO `posts` VALUES ('$id', '$title', '$icon', '$name', '$descr', '$img')";
+        $query = "INSERT INTO `posts` (`id`, `title`, `icon`, `name`, `descr`, `img`) VALUES ('$id', '$title', '$icon', '$name', '$descr', '$img')";
         $result = mysqli_query($conn, $query);
     }
 

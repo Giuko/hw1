@@ -1,5 +1,5 @@
 <?php
-    $conn = mysqli_connect('localhost', 'root', '','test') or die("Connect failed: " . mysqli_connect_error()); 
+    $conn = mysqli_connect('localhost', 'root', '','homeworkWP') or die("Connect failed: " . mysqli_connect_error()); 
     $query = "SELECT Username FROM accounts WHERE 1";                
     $res = mysqli_query($conn, $query);
     $data = array();

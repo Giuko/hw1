@@ -78,6 +78,7 @@ function loadComment(){
         return response.json();
     }).then((json) => {
         if(json !== 0){
+            console.log(json);
             const main = document.querySelector("#main");
             json.forEach(element => {
                 postComment(main, element);

@@ -90,7 +90,9 @@ async function validazioneLogin(e){
             const url = 'script_php/checkCredentials.php' + request;
             
             const response = await fetch(url);
-            const json = await response.json();
+            const json = await response.text();
+            console.log(json);
+            
             if(json === 0){
                 errorParagraph.textContent = ("Password errata");
                 errorParagraph.classList.add('errore');

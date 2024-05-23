@@ -2,19 +2,19 @@
     session_start();
     if($_SESSION['username']){
         $username = $_SESSION['username'];
-        $conn = mysqli_connect('localhost', 'root', '','test') or die("Connect failed: " . mysqli_connect_error()); 
+        $conn = mysqli_connect('localhost', 'root', '','homeworkWP') or die("Connect failed: " . mysqli_connect_error()); 
         // Estraggo gli id di tutti i post salvati dall'utente
-        $query = "SELECT * FROM Saved WHERE Username = '$username'";
+        $query = "SELECT * FROM `saved` s JOIN `accounts` a ON s.account_id = a.id WHERE a.username = '$username'";
         $res = mysqli_query($conn, $query);
         $ids = array();
         while($id = mysqli_fetch_assoc($res)){
-            $ids[] = $id['id'];
+            $ids[] = $id['post_id'];
         }
+        
         // Ho gli ID
-
         $rows = array();
         foreach($ids as $id){
-            $query = "SELECT * FROM `posts` WHERE id = '$id'";
+            $query = "SELECT * FROM `posts` WHERE numeric_id = $id";
             $result = mysqli_query($conn, $query);
             $rows[] = mysqli_fetch_assoc($result);            
         }
@@ -36,6 +36,7 @@
             $rows[] = $row;
         }
         */
+        
         // Chiusura della connessione al database
         mysqli_close($conn);
 
