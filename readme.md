@@ -18,10 +18,5 @@ Ho usato come API REST senza OAuth per quanto riguarda la ricerca di profili e c
 <!-- #region ==== RICHIESTE ASINCRONE ==== -->
     Tutte le richieste che necessitano l'intervento del server sono asincrone.
     L'unico ricaricamento è in saved.php:
-                                --> nel logout si verrà reinderizzati in hw1.php
-<!-- #endregion -->
-
-<!-- #region ==== TODO==== -->
-<!-- ==== TODO==== -->
-    Aggiungere l'opzione di eliminare commento
+                                --> nel logout si verrà reinderizzati in index.php
 <!-- #endregion -->
