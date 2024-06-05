@@ -1,7 +1,9 @@
 const usernameJson = [];
+const emailJson = [];
 fetch('script_php/username.php').then((response) => {return response.json()}).then((json) =>{
     for(let i = 0; i < json.length; i++){
-        usernameJson.push(json[i].Username);
+        usernameJson.push(json[i].username);
+        emailJson.push(json[i].email);
     }
 })
 
@@ -150,6 +152,11 @@ async function validazioneSignup(e){
         if(usernameJson.includes(username)){
             form.username.value='';
             errorParagraph.textContent = ("Nome Utente esistente");
+            errorParagraph.classList.add('errore');
+            errorParagraph.classList.remove('hidden');
+        }else if(emailJson.includes(email)){
+            form.username.value='';
+            errorParagraph.textContent = ("Email già in uso");
             errorParagraph.classList.add('errore');
             errorParagraph.classList.remove('hidden');
         }else{

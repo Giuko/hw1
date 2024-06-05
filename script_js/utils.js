@@ -70,7 +70,19 @@ function leaveStar(e){
     }
 }
 
-function clickStar(e){
+async function clickStar(e){
+    e.preventDefault();
+    let isLogged;
+    await fetch("script_php/checkIfLogged.php").then((response)=>{
+        return response.json();
+    }).then((json) =>{
+        isLogged=json;
+    });
+    if(!isLogged){
+        loginClick();
+        return;
+    }
+
     let star = e.target;
     let clicked = star.dataset.click;
 
@@ -141,7 +153,6 @@ function clickStar(e){
         });
     }
 
-    e.preventDefault();
 
 }
 /* #endregion */

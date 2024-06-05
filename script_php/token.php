@@ -5,7 +5,7 @@
 
     $headers = array(
         "Authorization: Basic ".base64_encode($client_id.":".$client_secret),
-        "user-agent: Mozilla/5.0 (Macintosh; PPC Mac OS X 10_8_7 rv:5.0; en-US) AppleWebKit/533.31.5 (KHTML, like Gecko) Version/4.0 Safari/533.31.5"
+        "user-agent: My_University_script 1.0 (by /u/GiukoMG)"
     );
 
     $username = "GiukoMG";

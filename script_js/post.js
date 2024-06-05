@@ -15,9 +15,8 @@ class Post{
 async function loadPosts(value){
     console.log("Loading topic: " + value);
     const posts = [];
-    const query = `/search.json?q=${value}&limit=10`
-    console.log(query);
-    const url = 'script_php/fetchNoOauth.php?request=' + query;
+    const query = `/search.json?q=${encodeURIComponent(value)}&limit=10`;
+    const url = `script_php/fetchNoOauth.php?request=${query}`;
     
     json = await fetch(url).then(onResponse, onFailure);
     console.log('loadPost: '+ JSON.stringify(json));

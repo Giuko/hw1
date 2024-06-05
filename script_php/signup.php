@@ -10,8 +10,8 @@
             $email = mysqli_real_escape_string($conn, $_POST['email']);
             $password = mysqli_real_escape_string($conn, $_POST['password']);
 
-            // Il nome utente già esiste
-            $query = "SELECT password FROM `accounts` WHERE username = '$username'";
+            // Il nome utente o email già esistente 
+            $query = "SELECT password FROM `accounts` WHERE username = '$username' OR email = '$email'";
             $res = mysqli_query($conn, $query);
             if($res->num_rows !== 0){
                 exit;

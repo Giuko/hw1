@@ -496,8 +496,9 @@ function loadContent(){
 /* #endregion */
 
 
-HeadLoading();
-loadSubreddit();
+setTimeout(HeadLoading, 500);
+setTimeout(loadSubreddit, 1000);
+// loadSubreddit();
 loadPosts('new').then((value) => {
     post_array = value;
     console.log('Post loaded');

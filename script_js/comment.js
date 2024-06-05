@@ -152,19 +152,6 @@ fetch(url).then((response) =>{
     }
 }).then(loadComment);
 
-// async function commentClick(){
-//     let isLogged;
-//     await fetch('script_php/checkIfLogged.php').then((response) => {
-//         return response.json();
-//     }).then((json) => {
-//         isLogged = json;
-//     })
-//     if(!isLogged){
-//         loginClick();
-//         return;
-//     }
-// }
-
 async function commentClick(){
     let isLogged;
 
